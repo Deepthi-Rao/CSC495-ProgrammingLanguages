@@ -1,10 +1,18 @@
+import argparse
 import socket, threading
 
 ADMIN = 'Server'
+MIN_NAME_LENGTH = 2
+INVALID_NAMES = [ADMIN.upper(), 'SERVER', 'ADMIN', 'OWNER', 'SYSTEM']
 controller = None
 clientThreads = []
 msgQueue = []
 msgEvent = threading.Event()
+
+def cmdline():
+    parser = argparse.ArgumentParser(description='Game server')
+    parser.add_argument('-p', '--port', type=int, default=2222, help='server port number')
+    return parser.parse_args()
 
 class Client(threading.Thread):
     def __init__(self, cs, addr):
@@ -15,16 +23,19 @@ class Client(threading.Thread):
         self.nameset = False
 
     def run(self):
+        self.send('Input player name')
         msg = ''
         pkt = self.cs.recv(2048)
         while pkt != b'':
             msg += str(pkt, encoding='utf-8')
             if msg[-1] == '\n':
                 if self.nameset == False:
-                    self.setName(msg[:-1])
-                    print('{} has name {}'.format(self.addr, self.playerName))
-                    msgQueue.append((controller, '{} has connected'.format(self.playerName)))
-                    msgEvent.set()
+                    if self.setName(msg[:-1]):
+                        print('{} has name {}'.format(self.addr, self.playerName))
+                        msgQueue.append((controller, '{} has connected'.format(self.playerName)))
+                        msgEvent.set()
+                    else:
+                        self.send('Invalid player name. Enter a new one')
                 else:
                     msgQueue.append((self, msg[:-1]))
                     msgEvent.set()
@@ -36,8 +47,15 @@ class Client(threading.Thread):
         clientThreads.remove(self)
 
     def setName(self, name):
+        name = name.strip()
+        if len(name) < MIN_NAME_LENGTH or name.upper() in INVALID_NAMES: 
+            return False
+        for c in clientThreads:
+            if c.playerName.upper() == name.upper():
+                return False
         self.playerName = name
         self.nameset = True
+        return True
 
     def send(self, msg):
         msg = msg + '\n'
@@ -73,13 +91,14 @@ def controllerMain():
                         c.send(r[1])
 
 if __name__ == "__main__":
+    args = cmdline()
     controller = threading.Thread(target=controllerMain)
     controller.playerName = ADMIN
     controller.start()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((socket.gethostname(), 2222))
+    s.bind((socket.gethostname(), args.port))
     print('Hostname: {}'.format(socket.gethostname()))
-    print('Port: {}'.format(2222))
+    print('Port: {}'.format(args.port))
     s.listen(5)
     while True:
         (cs, addr) = s.accept()
