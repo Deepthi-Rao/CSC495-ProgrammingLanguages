@@ -8,6 +8,7 @@ controller = None
 clientThreads = []
 msgQueue = []
 msgEvent = threading.Event()
+running = True
 
 def cmdline():
     parser = argparse.ArgumentParser(description='Game server')
@@ -41,9 +42,12 @@ class Client(threading.Thread):
                     msgEvent.set()
                 msg = ''
             pkt = self.cs.recv(2048)
+        self.cs.shutdown(socket.SHUT_RDWR)
+        self.cs.close()
         print('{} ({}) has disconnected'.format(self.addr, self.playerName))
-        msgQueue.append((controller, '{} has disconnected'.format(self.playerName)))
-        msgEvent.set()
+        if running:
+            msgQueue.append((controller, '{} has disconnected'.format(self.playerName)))
+            msgEvent.set()
         clientThreads.remove(self)
 
     def setName(self, name):
@@ -63,11 +67,14 @@ class Client(threading.Thread):
         while charssent < len(msg):
             try:
                 sent = self.cs.send(msg[charssent:].encode(encoding='utf-8'))
-            except BrokenPipeError:
+            except (BrokenPipeError, OSError):
                 sent = 0
             if sent == 0:
                 return
             charssent += sent
+
+    def exit(self):
+        self.cs.shutdown(socket.SHUT_WR)
 
 def processMsg(name, msg):
     if name == ADMIN:
@@ -79,7 +86,7 @@ len(otherPlayers) else 'No other players'))]
     return [([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg)]
 
 def controllerMain():
-    while True:
+    while running:
         msgEvent.wait()
         msgEvent.clear()
         while len(msgQueue) > 0:
@@ -100,11 +107,22 @@ if __name__ == "__main__":
     print('Hostname: {}'.format(socket.gethostname()))
     print('Port: {}'.format(args.port))
     s.listen(5)
-    while True:
-        (cs, addr) = s.accept()
-        print('New connection from {}'.format(addr))
-        t = Client(cs, addr)
-        clientThreads.append(t)
-        t.start()
+    while running:
+        cs = None
+        try:
+            cs, addr = s.accept()
+            print('New connection from {}'.format(addr))
+            t = Client(cs, addr)
+            clientThreads.append(t)
+            t.start()
+        except KeyboardInterrupt:
+            if cs:
+                cs.close()
+            running = False
+            msgEvent.set()
+    s.close()
+    print('Shutting down')
+    for t in clientThreads:
+        t.exit()
 
 # vim: set filetype=python ts=4 sw=4 expandtab:
