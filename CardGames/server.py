@@ -4,7 +4,17 @@ import socket, threading
 ADMIN = 'Server'
 MIN_NAME_LENGTH = 2
 INVALID_NAMES = [ADMIN.upper(), 'SERVER', 'ADMIN', 'OWNER', 'SYSTEM']
+CMDLEADER = '/'
+CMDSTART = CMDLEADER + 'START'
+CMDHALT = CMDLEADER + 'HALT'
+
+ERSNAME = ['ERS', 'EGYPTIANRATSCREW']
+LASTONENAME = ['LO', 'LASTONE']
+
+listener = None
 controller = None
+gameMaster = None
+gmLock = threading.Lock()
 clientThreads = []
 msgQueue = []
 msgEvent = threading.Event()
@@ -33,7 +43,7 @@ class Client(threading.Thread):
                 if self.nameset == False:
                     if self.setName(msg[:-1]):
                         print('{} has name {}'.format(self.addr, self.playerName))
-                        msgQueue.append((controller, '{} has connected'.format(self.playerName)))
+                        msgQueue.append((controller, 'CONNECT ' + self.playerName))
                         msgEvent.set()
                     else:
                         self.send('Invalid player name. Enter a new one')
@@ -46,9 +56,16 @@ class Client(threading.Thread):
         self.cs.close()
         print('{} ({}) has disconnected'.format(self.addr, self.playerName))
         if running:
-            msgQueue.append((controller, '{} has disconnected'.format(self.playerName)))
+            msgQueue.append((controller, 'DISCONNECT ' + self.playerName))
             msgEvent.set()
         clientThreads.remove(self)
+        with gmLock:
+            if gameMaster == self:
+                setGameMaster(None)
+                for c in clientThreads:
+                    if c.nameset:
+                        setGameMaster(c)
+                        break
 
     def setName(self, name):
         name = name.strip()
@@ -59,6 +76,9 @@ class Client(threading.Thread):
                 return False
         self.playerName = name
         self.nameset = True
+        with gmLock:
+            if gameMaster == None:
+                setGameMaster(self)
         return True
 
     def send(self, msg):
@@ -76,13 +96,53 @@ class Client(threading.Thread):
     def exit(self):
         self.cs.shutdown(socket.SHUT_WR)
 
+def setGameMaster(client):
+    # setGameMaster must be called within "with gmLock"
+    global gameMaster
+    gameMaster = client
+    if client != None:
+        print('{} is now the Game Master'.format(client.playerName))
+        msgQueue.append((controller, 'MASTER ' + client.playerName))
+        msgEvent.set()
+    else:
+        print('Game Master is no longer set')
+
 def processMsg(name, msg):
+    global running
     if name == ADMIN:
-        who = msg.split(' ')[0]
-        otherPlayers = [c.playerName for c in clientThreads if c.playerName != who]
-        return [(otherPlayers, ADMIN + ': ' + msg),
-                (who, ADMIN + ': ' + (('Current players are: ' + ', '.join(otherPlayers)) if
-len(otherPlayers) else 'No other players'))]
+        tokens = msg.split(' ')
+        if tokens[0] == 'CONNECT':
+            otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
+            return [(otherPlayers, '{}: {} has connected'.format(ADMIN, tokens[1])),
+                    ([tokens[1]], ADMIN + ': ' + (('Current players are: ' + ', '.join(otherPlayers)) if len(otherPlayers) else 'No other players'))]
+        elif tokens[0] == 'DISCONNECT':
+            otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
+            return [(otherPlayers, '{}: {} has disconnected'.format(ADMIN, tokens[1]))]
+        elif tokens[0] == 'MASTER':
+            allPlayers = [c.playerName for c in clientThreads]
+            return [(allPlayers, '{}: {} is now the Game Master'.format(ADMIN, tokens[1]))]
+        else:
+            print('unknown ' + ADMIN + ' msg: ' + msg)
+        return []
+
+    if len(msg) == 0:
+        return []
+    if msg[0] == CMDLEADER:
+        msgArgs = msg.split(' ')
+        if msgArgs[0].upper() == CMDSTART and name == gameMaster.playerName:
+            if len(msgArgs) <= 1:
+                return [([name], 'Invalid command')]
+            if msgArgs[1].upper() in ERSNAME:
+                listener.close()
+                return [([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.')]
+            elif msgArgs[1].upper() in LASTONENAME:
+                listener.close()
+                return [([c.playerName for c in clientThreads], 'Starting Last One.')]
+        if msgArgs[0].upper() == CMDHALT and name == gameMaster.playerName:
+            running = False
+            msgEvent.set()
+            return []
+        return [([name], 'Invalid command')]
     return [([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg)]
 
 def controllerMain():
@@ -102,15 +162,15 @@ if __name__ == "__main__":
     controller = threading.Thread(target=controllerMain)
     controller.playerName = ADMIN
     controller.start()
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((socket.gethostname(), args.port))
+    listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    listener.bind((socket.gethostname(), args.port))
     print('Hostname: {}'.format(socket.gethostname()))
     print('Port: {}'.format(args.port))
-    s.listen(5)
+    listener.listen(5)
     while running:
         cs = None
         try:
-            cs, addr = s.accept()
+            cs, addr = listener.accept()
             print('New connection from {}'.format(addr))
             t = Client(cs, addr)
             clientThreads.append(t)
@@ -118,9 +178,14 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             if cs:
                 cs.close()
+            listener.close()
             running = False
             msgEvent.set()
-    s.close()
+        except OSError:
+            if cs:
+                cs.close()
+            break
+    controller.join()
     print('Shutting down')
     for t in clientThreads:
         t.exit()
