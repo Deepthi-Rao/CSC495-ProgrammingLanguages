@@ -74,3 +74,4 @@ if __name__ == "__main__":
         msgEvent.set()
         sock.shutdown(socket.SHUT_WR)
 
+# vim: set filetype=python ts=4 sw=4 expandtab:
