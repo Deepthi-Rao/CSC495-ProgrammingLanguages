@@ -9,15 +9,31 @@ class Game:
     #gameName will be the name of the game
     #players will be a string of player IDs
     
-    def __init__(self, gameName, players):
+    def __init__(self, gameName, player, numPlayers):
         self.name = gameName
         # self.currentState = startState
         self.players = [Player(p) for p in players]
         self.winner = None
         self.currentPlayer = None
+        createDeck()
 
     def setTopCard(self, topCard):
         self.topCard = topCard
+
+    def setSecondCard(self, secondCard):
+        self.secondCard = secondCard
+    
+    def setThirdCard(self, thirdCard):
+        self.thirdCard = thirdCard
+    
+    def getTopCard(self):
+        return self.topCard
+    
+    def getSecondCard(self):
+        return self.secondCard
+
+    def getThirdCard(self):
+        return self.thirdCard
 
     def setCurrentPlayer(self, currentPlayer):
         self.currentPlayer = currentPlayer
@@ -38,46 +54,56 @@ class Game:
         #custom to each game
         return
 
+    def getPlayerCount(self):
+        return numPlayers
+
+    def playerTurn(self):
+        return numPlayers - turn
+
     def createDeck(self):
         self.deck = Deck()
         self.deck.shuffle()
+        setTopCard(self.deck.getFirstCard)
+        setSecondCard(self.deck.getSecondCard)
+        setThirdCard(self.deck.getThirdCard)
     
 
 """ This defines the abstract state class 
     (we can just put these within the custom implementations)"""
 
-class State:
 
-    def __init__(self, stateName):
-        self.stateName = stateName
-
-    def setNextState( self, state):
-        setCurrentState(state)
-
-    def processCurrent(self):
-        #custom to state
-        return
-
-class Begin(State):
-
-    def setNextState(self, state):
-        #custom to game
+#might be useful to have in the larger game class
+class SpecialCard:
+    def onNextCard(self, nextCard):
         return
     
-    def processCurrent(self, firstPlayer):
-        setCurrentPlayer(firstPlayer)
-
-class End(State):
+class TwoCard(SpecialCard):
+    def __repr__(self):
+        "The next player must draw two cards from the stock, and is not allowed to play a card."
     
-    def setWinningPlayer(self):
-        setWinner(getCurrentPlayer())
-    
-    def processCurrent(self):
-        setWinner()
-    
-    def setNextState(self):
-        #nothing
-        return
+class ThreeCard(SpecialCard):
+    def __repr__(self):
+        "The current player may play any card on top of this card."
+        
+class FourCard(SpecialCard):
+    def __repr__(self):
+        "Melee. If the next player (or any other player) has the next rank card of the same suit, they may play it. If no one plays the next card, the next player must draw from stock the number of cards equal to the value of the current card."
+        
+class EightCard(SpecialCard):
+    def __repr__(self):
+        "The current player announces a suit, and the next play should be in the announced suit."
+        
+class JackCard(SpecialCard):
+    def __repr__(self):
+        "The next player skips a turn."
+        
+class AceCard(SpecialCard):
+    def __repr__(self):
+        "The direction of play is now reversed."
+        
+class JokerCard(SpecialCard):
+    def __repr__(self):
+        "The Joker can represent any card of the pack, at the choice of the current player."
 
         
         
