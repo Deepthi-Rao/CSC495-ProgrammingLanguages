@@ -1,5 +1,3 @@
-#!/usr/local/bin/python3
-
 import sys, traceback, time, random
 
 class Card:
@@ -32,6 +30,7 @@ class Deck:
         if jokers:
             self.cards.append(Card(None, "joker"))
             self.cards.append(Card(None, "joker"))
+        self.total = 52
             
     def shuffle(self):
         random.shuffle(self.cards)
@@ -40,16 +39,3 @@ class Deck:
         self.shuffle()
         for i in range(handSize):
             yield self.cards[i]
-
-
-class Hand:
-    def __repr__(self):
-        return self.__class__.__name__
-        
-class Game:
-    def __repr__(self):
-        return self.__class__.__name__
-        
-class EgyptianRatscrew(Game):
-    return
-        
