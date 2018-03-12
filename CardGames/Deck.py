@@ -36,6 +36,5 @@ class Deck:
         random.shuffle(self.cards)
         
     def deal(self, handSize):
-        self.shuffle()
         for i in range(handSize):
             yield self.cards[i]
