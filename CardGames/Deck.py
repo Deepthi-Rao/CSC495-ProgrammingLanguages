@@ -4,9 +4,13 @@ class Card:
     def __repr__(self):
         return self.__class__.__name__
         
+    def __str__(self):
+        return str(self.rank) + " of " + self.suit
+        
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
+        self.isDealt = False
     
     def getSuit(self):
         return self.suit
@@ -18,13 +22,19 @@ class Card:
         if self.rank == "joker":
             return true
         return false
+    
+    def isDealt(self):
+        return self.isDealt
+        
+    def dealMe(self):
+        self.isDealt = True
 
 class Deck:
     def __repr__(self):
         return self.__class__.__name__
         
     def __init__(self, jokers=False):
-        suits = ["hearts","diamonds","spades","clubs"]
+        suits = ["Hearts","Diamonds","Spades","Clubs"]
         ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
         self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
         if jokers:
@@ -36,5 +46,10 @@ class Deck:
         random.shuffle(self.cards)
         
     def deal(self, handSize):
-        for i in range(handSize):
-            yield self.cards[i]
+        i = 0
+        while i < handSize:
+            if not self.cards[i].isDealt:
+                self.cards[i].dealMe()
+                i += 1
+                yield self.cards[i]
+                

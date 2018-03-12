@@ -1,4 +1,5 @@
-import sys, traceback, time, random
+from Hand import Hand
+from Deck import Card, Deck
 
 class Player:
     def __repr__(self):
@@ -6,6 +7,7 @@ class Player:
         
     def __init__(self, id):
         self.id = id
+        self.hand = None
     
     def getId(self):
         return self.id
@@ -15,3 +17,9 @@ class Player:
 
     def getIsPlaying(self):
         return self.isPlaying
+    
+    def viewHand(self):
+        self.hand.showHand()
+    
+    def setHand(self, hand):
+        self.hand = hand

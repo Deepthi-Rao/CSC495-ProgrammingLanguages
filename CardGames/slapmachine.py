@@ -2,8 +2,9 @@
 
 import sys, traceback, time, random
 
-class State():
-    return
+class State:
+    def __repr__():
+        return self.__name__
     
 class Slappable(State):
     def onSlap(self):
