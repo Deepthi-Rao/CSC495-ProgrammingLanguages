@@ -8,6 +8,7 @@ class Player:
     def __init__(self, id):
         self.id = id
         self.hand = None
+        self.numCards = 0
     
     def getId(self):
         return self.id
@@ -23,3 +24,10 @@ class Player:
     
     def setHand(self, hand):
         self.hand = hand
+        self.numCards = hand.getNumCardsInHand()
+
+    def playCard(self):
+        self.numCards = self.numCards - 1
+        return self.hand.getFirstCard()
+        
+        

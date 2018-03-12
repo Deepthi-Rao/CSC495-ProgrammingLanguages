@@ -44,15 +44,6 @@ class Deck:
             
     def shuffle(self):
         random.shuffle(self.cards)
-
-    def getFirstCard:
-        return self.cards[0]
-
-    def getSecondCard:
-        return self.cards[1]  
-
-    def getThirdCard:
-        return self.cards[2]
   
     def deal(self, handSize):
         i = 0
