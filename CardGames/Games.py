@@ -1,4 +1,4 @@
-import Player, abstractmethod
+import Player, Deck, abstractmethod
 
 """This defines the game class """
 
@@ -11,7 +11,7 @@ class Game:
         self.name = gameName
         self.currentState = startState
         self.players = [Player(p) for p in players]
-        
+        createDeck()
 
     def setTopCard(self, topCard):
         self.topCard = topCard
@@ -34,7 +34,9 @@ class Game:
     def runGame(self):
         #custom to each game
 
-
+    def createDeck(self):
+        self.deck = Deck()
+    
 
 """ This defines the abstract state class 
     (we can just put these within the custom implementations)"""

@@ -30,6 +30,7 @@ class Deck:
         if jokers:
             self.cards.append(Card(None, "joker"))
             self.cards.append(Card(None, "joker"))
+        self.total = 52
             
     def shuffle(self):
         random.shuffle(self.cards)
