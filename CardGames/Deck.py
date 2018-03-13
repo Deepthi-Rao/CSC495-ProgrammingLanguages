@@ -47,9 +47,13 @@ class Deck:
   
     def deal(self, handSize):
         i = 0
+        hand = list()
         while i < handSize:
-            if not self.cards[i].isDealt:
-                self.cards[i].dealMe()
+            if not self.cards[0].isDealt:
+                self.cards[0].dealMe()
+                hand.append(self.cards.pop(0))
                 i += 1
-                yield self.cards[i]
+        return hand
+                
+        
                 
