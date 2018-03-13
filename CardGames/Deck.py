@@ -2,9 +2,13 @@ import sys, traceback, time, random
 
 class Card:
     def __repr__(self):
-        return self.__class__.__name__
+        if self.rank == None or self.suit == None:
+            return "Joker"
+        return str(self.rank) + " of " + self.suit
         
     def __str__(self):
+        if self.rank == None or self.suit == None:
+            return "Joker"
         return str(self.rank) + " of " + self.suit
         
     def __init__(self, suit, rank):
@@ -20,14 +24,23 @@ class Card:
         
     def isJoker(self):
         if self.rank == "joker":
-            return true
-        return false
+            return True
+        return False
     
     def isDealt(self):
         return self.isDealt
         
     def dealMe(self):
         self.isDealt = True
+    
+    def match(self, other):
+        if self.isJoker() and other.isJoker():
+            print("Joker comparison!")
+            return True
+        elif self.rank == other.rank and self.suit == other.suit:
+            return True
+        print("No match!")
+        return False
 
 class Deck:
     def __repr__(self):
@@ -37,23 +50,22 @@ class Deck:
         suits = ["Hearts","Diamonds","Spades","Clubs"]
         ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
         self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
+        self.total = 52
         if jokers:
             self.cards.append(Card(None, "joker"))
             self.cards.append(Card(None, "joker"))
-        self.total = 52
+            self.total = 54
+        
             
     def shuffle(self):
         random.shuffle(self.cards)
   
     def deal(self, handSize):
         i = 0
-        hand = list()
-        while i < handSize:
-            if not self.cards[0].isDealt:
-                self.cards[0].dealMe()
-                hand.append(self.cards.pop(0))
+        j = 0
+        while i < handSize and j < self.total:
+            if not self.cards[j].isDealt:
+                self.cards[j].dealMe()
                 i += 1
-        return hand
-                
-        
-                
+                yield self.cards.pop(j)
+            j += 1

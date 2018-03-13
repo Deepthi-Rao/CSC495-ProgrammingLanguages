@@ -5,8 +5,8 @@ class Hand:
         hand = ','.join(self.cards)
         return self.__class__.__name__
         
-    def __init__(self, deck, handSize):
-        self.cards = deck.deal(handSize)
+    def __init__(self, cards, handSize):
+        self.cards = cards
         self.numCards = handSize
 
     def getFirstCard(self): #first from top
@@ -22,5 +22,6 @@ class Hand:
         return self.numCards
     
     def showHand(self):
-        print(self.cards)
+        print(list(self.cards))
+
         
