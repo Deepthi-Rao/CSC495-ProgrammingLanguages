@@ -140,14 +140,14 @@ def processMsg(name, msg):
                 game = EgyptianRatsCrew([c.playerName for c in clientThreads])
                 return [([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.')]
             elif msgArgs[1].upper() in LASTONENAME:
-                listener.close()
-                return [([c.playerName for c in clientThreads], 'Starting Last One.')]
+                return [([c.playerName for c in clientThreads], 'Last One not server compatible.')]
         if msgArgs[0].upper() == CMDHALT and name == gameMaster.playerName:
             running = False
             return []
         return [([name], 'Invalid command')]
-    if game:
+    if game and game.name == 'Egyptian Rats Crew':
         return game.play()
+        return game.processMsg(name, msg)
     return [([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg)]
 
 def controllerMain():

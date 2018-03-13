@@ -350,8 +350,6 @@ class TheLastOne(Game):
     def setState(self, state):
         self.currentState = state
 
-        
-
 
 game = TheLastOne()
 game.runGame()

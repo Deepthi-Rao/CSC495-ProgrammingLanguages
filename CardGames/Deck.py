@@ -54,6 +54,8 @@ class Deck:
             self.cards.append(Card("joker", None))
             self.total = 54
         
+    def __len__(self):
+        return len(self.cards)
             
     def shuffle(self):
         random.shuffle(self.cards)
@@ -67,3 +69,6 @@ class Deck:
                 i += 1
                 yield self.cards.pop(j)
             j += 1
+
+    def pop(self, indx):
+        return self.cards.pop(indx)
