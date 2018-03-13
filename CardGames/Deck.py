@@ -11,9 +11,9 @@ class Card:
             return "Joker"
         return str(self.rank) + " of " + self.suit
         
-    def __init__(self, suit, rank):
-        self.suit = suit
+    def __init__(self, rank, suit):
         self.rank = rank
+        self.suit = suit
         self.isDealt = False
     
     def getSuit(self):
@@ -35,11 +35,9 @@ class Card:
     
     def match(self, other):
         if self.isJoker() and other.isJoker():
-            print("Joker comparison!")
             return True
-        elif self.rank == other.rank and self.suit == other.suit:
+        elif str(self.rank) == str(other.rank) and self.suit == other.suit:
             return True
-        print("No match!")
         return False
 
 class Deck:
@@ -49,11 +47,11 @@ class Deck:
     def __init__(self, jokers=False):
         suits = ["Hearts","Diamonds","Spades","Clubs"]
         ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
-        self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
+        self.cards = [Card(rank, suit) for rank in ranks for suit in suits]
         self.total = 52
         if jokers:
-            self.cards.append(Card(None, "joker"))
-            self.cards.append(Card(None, "joker"))
+            self.cards.append(Card("joker", None))
+            self.cards.append(Card("joker", None))
             self.total = 54
         
             

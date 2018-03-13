@@ -23,5 +23,16 @@ class Hand:
     
     def showHand(self):
         print(list(self.cards))
-
+    
+    def addCards(self, cards):
+        self.cards.extend(cards)
+        self.numCards += len(cards)
+    
+    def addCard(self, card):
+        self.cards.append(card)
+        self.numCards += 1
+        
+    def discard(self, card):
+        self.cards.remove(card)
+        self.numCards -= 1
         
