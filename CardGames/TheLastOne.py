@@ -29,8 +29,8 @@ class TurnState(State):
         if msg.lower() == "draw":
             game.setState(TurnState())
             print("Drawing one card.")
-            player.viewHand()
             player.hand.addCards(list(game.theDeck.deal(1)))
+            player.viewHand()
             return
         
         cardToPlay = game.pickCard(player, msg)
@@ -39,13 +39,18 @@ class TurnState(State):
         if cardToPlay is not None:
             if cardToPlay.getRank() == "joker":
                 game.setState(JokerState())
+                player.hand.discard(cardToPlay)
                 game.currentState.display()
                 cardString = input("Define your card: ")
                 cardPieces = cardString.split()
                 cardToPlay = Card(cardPieces[0], cardPieces[-1])
+                
             if (activeCard is None) or cardToPlay.getRank() == "joker" or (cardToPlay.getRank() == activeCard.getRank()) or (cardToPlay.getSuit() == activeCard.getSuit()):
                 game.pile.addCardToTop(cardToPlay)
-                player.hand.discard(cardToPlay)
+                try: # will throw an exception if card was a joker
+                    player.hand.discard(cardToPlay)
+                except:
+                    pass
                 rank = str(cardToPlay.getRank())
                 if rank == "2":
                     game.setState(TwoState())
@@ -96,11 +101,15 @@ class ThreeState(TurnState):
             if cardToPlay.getRank() == "joker":
                 game.setState(JokerState())
                 game.currentState.display()
+                player.hand.discard(cardToPlay)
                 cardString = input("Define your card: ")
                 cardPieces = cardString.split()
                 cardToPlay = Card(cardPieces[0], cardPieces[-1])
             game.pile.addCardToTop(cardToPlay)
-            player.hand.discard(cardToPlay)
+            try:
+                player.hand.discard(cardToPlay)
+            except:
+                pass
             rank = str(cardToPlay.getRank())
             if rank == "2":
                 game.setState(TwoState())
@@ -119,7 +128,7 @@ class ThreeState(TurnState):
                 game.setState(JackState())
                 game.currentState.display()
             elif rank == "A":
-                game.setState(AceState())
+                game.setState(AceState(game))
                 game.currentState.display()
             elif rank == "joker":
                 game.setState(JokerState())
@@ -149,15 +158,18 @@ class FourState(TurnState):
         cardToPlay = game.pickCard(player, msg)
         if cardToPlay is not None:
             if cardToPlay.getRank() == "joker":
-                game.setState(JokerState())
-                game.currentState.display()
+                player.hand.discard(cardToPlay)
                 cardString = input("Define your card: ")
                 cardPieces = cardString.split()
                 cardToPlay = Card(cardPieces[0], cardPieces[-1])
-            rank = cardToPlay.getRank()
+            rank = int(cardToPlay.getRank())
             continueMeleeRank = self.currentRank + 1
             if continueMeleeRank == rank and self.currentSuit == cardToPlay.getSuit():
                 game.pile.addCardToTop(cardToPlay)
+                try:
+                    player.hand.discard(cardToPlay)
+                except:
+                    pass
                 game.setState(FourState(continueMeleeRank))
                 print("Melee continues.")
                 return
@@ -222,12 +234,10 @@ class EightState(TurnState):
                 print("Invalid card. Draw one.")
                 player.hand.addCards(list(game.theDeck.deal(1)))
                 player.viewHand()
-                game.setState(TurnState())
         else:
             print("Invalid card: Not in hand. Draw one.")
-            player.hand.addCard(list(game.theDeck.deal(1)))
+            player.hand.addCards(list(game.theDeck.deal(1)))
             player.viewHand()
-            game.setState(TurnState())
     
     
 class JackState(TurnState):
@@ -251,10 +261,11 @@ class WinState(State):
     
 class TheLastOne(Game):
     BEGIN = BeginState()
-    def __init__(self, handSize=6):
+    def __init__(self):
         self.name = "The Last One"
         self.theDeck = Deck(True)
         self.theDeck.shuffle()
+        self.handSize = int(input("How many cards to deal? (between 4 and 8)\n"))
         numPlayers = int(input("How many players?\n"))
         players = []
         for i in range(numPlayers):
@@ -262,7 +273,6 @@ class TheLastOne(Game):
             playerID = input()
             players.append(Player(playerID))
         
-        self.handSize = handSize
         self.players = players
         self.currentPlayer = None
         global BEGIN
@@ -273,16 +283,15 @@ class TheLastOne(Game):
         self.pile = Pile()
         self.winner = None
         
-    def runGame(self, handSize=6):
+    def runGame(self):
         TURN = TurnState()
         WIN = WinState() 
         TWO = TwoState()
         JACK = JackState()
         
-        if handSize < 4 or handSize > 8:
+        if self.handSize < 4 or self.handSize > 8:
             print("Invalid hand size. Using default setting.")
-        else:
-            self.handSize = handSize
+            self.handSize = 6
         
         for p in self.players:
             cards = list(self.theDeck.deal(self.handSize))
@@ -341,9 +350,7 @@ class TheLastOne(Game):
     def setState(self, state):
         self.currentState = state
 
-        
 
-if __name__ == '__main__':
-    game = TheLastOne()
-    game.runGame(4)
+game = TheLastOne()
+game.runGame()
 
