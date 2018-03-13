@@ -1,31 +1,4 @@
-class Card:
-    def __repr__(self):
-        return self.__class__.__name__
-        
-    def __str__(self):
-        return str(self.rank) + " of " + self.suit
-        
-    def __init__(self, suit, rank):
-        self.suit = suit
-        self.rank = rank
-        self.isDealt = False
-    
-    def getSuit(self):
-        return self.suit
-        
-    def getRank(self):
-        return self.rank
-        
-    def isJoker(self):
-        if self.rank == "joker":
-            return true
-        return false
-    
-    def isDealt(self):
-        return self.isDealt
-        
-    def dealMe(self):
-        self.isDealt = True
+from Deck import Card
 
 class Pile:
 
@@ -40,7 +13,7 @@ class Pile:
         if(self.numCards > 0):
             return self.cards[self.numCards - 1] #last card in array is the top card
         else:
-            raise IndexError
+            return None
 
     def getSecondCard(self):
         if(self.numCards > 1):
