@@ -343,7 +343,7 @@ class TheLastOne(Game):
 
         
 
-
-game = TheLastOne()
-game.runGame(4)
+if __name__ == '__main__':
+    game = TheLastOne()
+    game.runGame(4)
 
