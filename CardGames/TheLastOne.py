@@ -20,6 +20,9 @@ class TurnState(State):
     
     def setId(self, player):
         self.id = player
+        
+    def processMessage(msg):
+        return
 
 class TheLastOne(Game):
     
@@ -69,5 +72,6 @@ game = TheLastOne(players)
 game.runGame(8)
 players[0].viewHand()
 players[1].viewHand()
-print(game.pickCard(players[0], "joker"))
+players[0].viewHand()
+players[1].viewHand()
 

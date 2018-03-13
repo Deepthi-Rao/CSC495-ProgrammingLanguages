@@ -50,10 +50,12 @@ class Deck:
         suits = ["Hearts","Diamonds","Spades","Clubs"]
         ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
         self.cards = [Card(suit, rank) for suit in suits for rank in ranks]
+        self.total = 52
         if jokers:
             self.cards.append(Card(None, "joker"))
             self.cards.append(Card(None, "joker"))
-        self.total = 52
+            self.total = 54
+        
             
     def shuffle(self):
         random.shuffle(self.cards)
@@ -61,10 +63,9 @@ class Deck:
     def deal(self, handSize):
         i = 0
         j = 0
-        while i < handSize and j < 54:
+        while i < handSize and j < self.total:
             if not self.cards[j].isDealt:
                 self.cards[j].dealMe()
                 i += 1
-                yield self.cards[j]
+                yield self.cards.pop(j)
             j += 1
-                

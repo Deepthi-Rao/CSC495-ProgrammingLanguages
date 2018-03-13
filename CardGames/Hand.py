@@ -8,10 +8,10 @@ class Hand:
     def __init__(self, cards, handSize):
         self.cards = cards
         self.numCards = handSize
-    
+
     def getFirstCard(self): #first from top
-        if(numCards < 1):
-            return cards[numCards - 1] #last card in array is the top card
+        if(self.numCards > 0):
+            return self.cards.pop(self.cards.__len__() - 1) #last card in array is the top card
         else:
             raise IndexError
 
@@ -23,4 +23,5 @@ class Hand:
     
     def showHand(self):
         print(list(self.cards))
+
         

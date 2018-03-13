@@ -44,22 +44,24 @@ class Pile:
 
     def getSecondCard(self):
         if(self.numCards > 1):
-            return self.cards[self.numCards - 1] #second to last card in array is the second card
+            return self.cards[self.numCards - 2] #second to last card in array is the second card
         else:
             raise IndexError
 
     def getThirdCard(self):
         if(self.numCards > 2):
-            return self.cards[self.numCards - 1] #third to last card in array is the third card
+            return self.cards[self.numCards - 3] #third to last card in array is the third card
         else:
             raise IndexError
 
     def addCardToTop(self, newCard):
         self.cards.append(newCard)
-        self.numCards = self.numCard + 1
+        self.numCards = self.numCards + 1
     
     def clearCardsFromPile(self): #returns cards until that point in time
         retList = self.cards
         self.cards= list() #clear card in the pile
         return retList
+
+
     
