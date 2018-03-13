@@ -14,13 +14,14 @@ class EgyptianRatsCrew(Game.Game):
     def __init__(self, playersID):
         self.name = "Egyptian Rats Crew"
         self.players = [Player(p) for p in playersID]
+        self.playerstrings = playersID
         self.numPlayers = len(self.players)
         if(52 % self.numPlayers == 0):
             self.handSize = 52 / self.numPlayers
 
         #else: #handles over flow cards
             #redistribute()
-            
+
         self.currentPlayer = self.players[0] #first entered is the first player
         self.turn = 0
         self.pile = None
@@ -29,7 +30,8 @@ class EgyptianRatsCrew(Game.Game):
         self.createPile()
         self.setCondition()
         self.currentState = Begin(self)
-    
+        self.msgs = []
+
     def getPile(self):
         return self.pile
 
@@ -99,8 +101,15 @@ class EgyptianRatsCrew(Game.Game):
             p.setHand(Hand(self.deck, self.handSize))
 
     def play(self):
-        self.currentState.processCurrent(self)
+        return self.currentState.processCurrent(self)
         
+    def appendMsg(self, msg):
+        self.msgs.append(([p.getId() for p in self.players], msg))
+
+    def fetchMsgs(self):
+        tmp = self.msgs
+        self.msgs = []
+        return tmp
 
 """Begin state machine for behavior of the game"""
 
@@ -132,57 +141,62 @@ class Begin(State):
 
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
-        print("Player number " + str(Game.getCurrentTurn()) + " is playing a Card")
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
         playingCard = Game.getCurrentPlayer().playCard()
         Game.getPile().addCardToTop(playingCard) #adds a card to the pile
-        print("The player has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
-        self.setNextState(Game)
+        return self.setNextState(Game)
 
     def setNextState(self, Game):
         Game.setCurrentState(NonSlappable(Game))
         Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-        print("Not Slappable")
+        Game.appendMsg("Not Slappable")
+        return Game.fetchMsgs()
 
 class Slappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
-        print("Player number " + str(Game.getCurrentTurn()) + " is playing a Card")
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
         playingCard = Game.getCurrentPlayer().playCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
-        print("The player has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
-        self.setNextState(Game)
+        return self.setNextState(Game)
         
     def setNextState(self, Game):
         if(self.slappable(Game.getTopCard(), Game.getSecondCard())):
             Game.setCurrentState(Slappable(Game))
             Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            print("Slappable")
+            Game.appendMsg("Slappable")
+            return Game.fetchMsgs()
         else:
             Game.setCurrentState(NonSlappable(Game))
             Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            print("Not Slappable")
+            Game.appendMsg("Not Slappable")
+            return Game.fetchMsgs()
 
 class NonSlappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
-        print("Player number " + str(Game.getCurrentTurn()) + " is playing a Card")
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
         playingCard = Game.getCurrentPlayer().playCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
-        print("The player has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
+        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
-        self.setNextState(Game)
+        return self.setNextState(Game)
         
     def setNextState(self, Game):
         if(self.slappable(Game.getTopCard(), Game.getSecondCard())):
             Game.setCurrentState(Slappable(Game))
             Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            print("Slappable")
+            Game.appendMsg("Slappable")
+            return Game.fetchMsgs()
         else:
             Game.setCurrentState(NonSlappable(Game))
             Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            print("Not Slappable")
+            Game.appendMsg("Not Slappable")
+            return Game.fetchMsgs()
 
 class End(State):
     
@@ -196,15 +210,37 @@ class End(State):
         #nothing
         return
     
-#Testing
-
-sample = EgyptianRatsCrew({"Billy", "Joe"})
-
-sample.play()
-sample.play()
-sample.play()
-sample.play()
-sample.play()
-sample.play()
-sample.play()
-
+#Interaction
+if __name__ == '__main__':
+    print("____Welcome to Egyptian Rats Crew____")
+    print("")
+    print("")
+    players = list()
+    numPlayers = input("How many players would you like? (Please enter even number of players only) : ")
+    print("")
+    print("")
+    print("You will now be prompted for player ID, enter the IDs in the you would like the player to play")
+    for i in range(0, numPlayers):
+        player = input("What is the name of player " + str(i) + " ? ")
+        players.append(str(player))
+    print("")
+    print("")
+    print("Game is being constructed with parameters given:")
+    print("Number of Players " + str(numPlayers))
+    print("Player IDs " + str(players))
+    print("")
+    print("")
+    currentGame = EgyptianRatsCrew(players)
+    print("Game Has Started")
+    print("")
+    print("")
+    print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
+    print("")
+    print("")
+    command = input("Enter a command: ")
+    while command == "play":
+        currentGame.play()
+        command = input("Enter a command: ")
+    print("")
+    print("")
+    print("exiting program")
