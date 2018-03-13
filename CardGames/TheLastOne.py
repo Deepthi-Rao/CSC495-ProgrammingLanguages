@@ -15,12 +15,17 @@ class TheLastOne(Game):
         theDeck = Deck(True)
         theDeck.shuffle()
         for p in self.players:
-            p.setHand(Hand(theDeck, self.handSize))
+            cards = theDeck.deal(self.handSize)
+            hand = Hand(cards, self.handSize)
+            p.setHand(hand)
         
 
-players = [Player("H"), Player("R")]
+players = [Player("H"), Player("R"), Player("Q")]
+print(players)
 
 game = TheLastOne(players)
 game.runGame()
 players[0].viewHand()
 players[1].viewHand()
+
+

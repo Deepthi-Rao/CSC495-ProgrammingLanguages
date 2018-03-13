@@ -2,9 +2,13 @@ import sys, traceback, time, random
 
 class Card:
     def __repr__(self):
-        return self.__class__.__name__
+        if self.rank == None or self.suit == None:
+            return "Joker"
+        return str(self.rank) + " of " + self.suit
         
     def __str__(self):
+        if self.rank == None or self.suit == None:
+            return "Joker"
         return str(self.rank) + " of " + self.suit
         
     def __init__(self, suit, rank):
@@ -47,9 +51,11 @@ class Deck:
   
     def deal(self, handSize):
         i = 0
-        while i < handSize:
-            if not self.cards[i].isDealt:
-                self.cards[i].dealMe()
+        j = 0
+        while i < handSize and j < 54:
+            if not self.cards[j].isDealt:
+                self.cards[j].dealMe()
                 i += 1
-                yield self.cards[i]
+                yield self.cards[j]
+            j += 1
                 

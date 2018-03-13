@@ -3,7 +3,7 @@ from Deck import Card, Deck
 
 class Player:
     def __repr__(self):
-        return self.__class__.__name__
+        return self.id
         
     def __init__(self, id):
         self.id = id
@@ -20,6 +20,8 @@ class Player:
         return self.isPlaying
     
     def viewHand(self):
+        if self.hand == None:
+            print("Empty hand.")
         self.hand.showHand()
     
     def setHand(self, hand):
