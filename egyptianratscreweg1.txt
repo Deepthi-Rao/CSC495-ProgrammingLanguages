@@ -1,0 +1,68 @@
+Hostname: Ipi
+Port: 33144
+New connection from ('152.7.73.164', 55555)
+Vincent is now the Game Master
+('152.7.73.164', 55555) has name Vincent
+Server: Vincent is now the Game Master
+Server: Vincent has connected
+Server: No other players
+New connection from ('152.7.73.164', 55556)
+('152.7.73.164', 55556) has name Deepthi
+Server: Deepthi has connected
+Server: Current players are: Vincent
+Starting Egyptian Rat Screw.
+Vincent is playing a Card
+Vincent has played a Card with the properties: Suit Diamonds and Rank Q
+Not Slappable
+Deepthi is playing a Card
+Deepthi has played a Card with the properties: Suit Clubs and Rank 3
+Not Slappable
+Vincent is playing a Card
+Vincent has played a Card with the properties: Suit Spades and Rank K
+Not Slappable
+Deepthi is playing a Card
+Deepthi has played a Card with the properties: Suit Clubs and Rank Q
+Not Slappable
+Vincent is playing a Card
+Vincent has played a Card with the properties: Suit Spades and Rank 7
+Not Slappable
+Deepthi is playing a Card
+Deepthi has played a Card with the properties: Suit Hearts and Rank 7
+Slappable
+Vincent is playing a Card
+Vincent has played a Card with the properties: Suit Hearts and Rank 4
+Not Slappable
+Deepthi is playing a Card
+Deepthi has played a Card with the properties: Suit Spades and Rank 4
+Slappable
+Vincent is playing a Card
+Vincent has played a Card with the properties: Suit Diamonds and Rank 2
+Not Slappable
+Deepthi is playing a Card
+Deepthi has played a Card with the properties: Suit Spades and Rank 10
+Not Slappable
+('152.7.73.164', 55555) (Vincent) has disconnected
+Game Master is no longer set
+Deepthi is now the Game Master
+Server: Vincent has disconnected
+Server: Deepthi is now the Game Master
+('152.7.73.164', 55556) (Deepthi) has disconnected
+Game Master is no longer set
+Server: Deepthi has disconnected
+Traceback (most recent call last):
+  File "server.py", line 194, in <module>
+    controller.join()
+  File "/usr/lib/python3.6/threading.py", line 1056, in join
+    self._wait_for_tstate_lock()
+  File "/usr/lib/python3.6/threading.py", line 1072, in _wait_for_tstate_lock
+    elif lock.acquire(block, timeout):
+KeyboardInterrupt
+Exception ignored in: <module 'threading' from '/usr/lib/python3.6/threading.py'>
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/threading.py", line 1294, in _shutdown
+    t.join()
+  File "/usr/lib/python3.6/threading.py", line 1056, in join
+    self._wait_for_tstate_lock()
+  File "/usr/lib/python3.6/threading.py", line 1072, in _wait_for_tstate_lock
+    elif lock.acquire(block, timeout):
+KeyboardInterrupt
