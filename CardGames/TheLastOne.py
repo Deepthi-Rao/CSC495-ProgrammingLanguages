@@ -29,8 +29,8 @@ class TurnState(State):
         if msg.lower() == "draw":
             game.setState(TurnState())
             print("Drawing one card.")
-            player.viewHand()
             player.hand.addCards(list(game.theDeck.deal(1)))
+            player.viewHand()
             return
         
         cardToPlay = game.pickCard(player, msg)
@@ -76,12 +76,12 @@ class TurnState(State):
                     
             else:
                 print("Invalid card. Draw One.")
-                player.hand.addCard(game.theDeck.deal(1))
+                player.hand.addCards(list(game.theDeck.deal(1)))
                 player.viewHand()
                 game.setState(TurnState())
         else:
             print("Invalid card: Not in hand. Draw One.")
-            player.hand.addCard(game.theDeck.deal(1))
+            player.hand.addCards(list(game.theDeck.deal(1)))
             player.viewHand()
             game.setState(TurnState())
             
@@ -142,7 +142,7 @@ class ThreeState(TurnState):
         
         else:
             print("Invalid card: Not in hand. Draw one.")
-            player.hand.addCard(game.theDeck.deal(1))
+            player.hand.addCards(list(game.theDeck.deal(1)))
             player.viewHand()
             game.setState(TurnState())
     
@@ -232,11 +232,11 @@ class EightState(TurnState):
                     
             else:
                 print("Invalid card. Draw one.")
-                player.hand.addCards(game.theDeck.deal(1))
+                player.hand.addCards(list(game.theDeck.deal(1)))
                 player.viewHand()
         else:
             print("Invalid card: Not in hand. Draw one.")
-            player.hand.addCard(game.theDeck.deal(1))
+            player.hand.addCards(list(game.theDeck.deal(1)))
             player.viewHand()
     
     
