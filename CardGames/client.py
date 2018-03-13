@@ -51,7 +51,7 @@ def controllerMain():
         msgEvent.wait()
         msgEvent.clear()
         while len(msgQueue) > 0:
-            print(msgQueue.pop())
+            print(msgQueue.pop(0))
 
 if __name__ == "__main__":
     args = cmdline()

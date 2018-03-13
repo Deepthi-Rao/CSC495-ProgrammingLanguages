@@ -1,5 +1,6 @@
 import argparse
 import socket, threading
+from EgyptianRatsCrew import EgyptianRatsCrew
 
 ADMIN = 'Server'
 MIN_NAME_LENGTH = 2
@@ -19,6 +20,7 @@ clientThreads = []
 msgQueue = []
 msgEvent = threading.Event()
 running = True
+game = None
 
 def cmdline():
     parser = argparse.ArgumentParser(description='Game server')
@@ -109,6 +111,7 @@ def setGameMaster(client):
 
 def processMsg(name, msg):
     global running
+    global game
     if name == ADMIN:
         tokens = msg.split(' ')
         if tokens[0] == 'CONNECT':
@@ -134,15 +137,17 @@ def processMsg(name, msg):
                 return [([name], 'Invalid command')]
             if msgArgs[1].upper() in ERSNAME:
                 listener.close()
+                game = EgyptianRatsCrew([c.playerName for c in clientThreads])
                 return [([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.')]
             elif msgArgs[1].upper() in LASTONENAME:
                 listener.close()
                 return [([c.playerName for c in clientThreads], 'Starting Last One.')]
         if msgArgs[0].upper() == CMDHALT and name == gameMaster.playerName:
             running = False
-            msgEvent.set()
             return []
         return [([name], 'Invalid command')]
+    if game:
+        return game.play()
     return [([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg)]
 
 def controllerMain():
@@ -150,9 +155,10 @@ def controllerMain():
         msgEvent.wait()
         msgEvent.clear()
         while len(msgQueue) > 0:
-            msg = msgQueue.pop()
+            msg = msgQueue.pop(0)
             responseList = processMsg(msg[0].playerName, msg[1])
             for r in responseList:
+                print(r[1])
                 for c in clientThreads:
                     if c.playerName in r[0]:
                         c.send(r[1])
