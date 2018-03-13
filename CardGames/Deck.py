@@ -24,14 +24,23 @@ class Card:
         
     def isJoker(self):
         if self.rank == "joker":
-            return true
-        return false
+            return True
+        return False
     
     def isDealt(self):
         return self.isDealt
         
     def dealMe(self):
         self.isDealt = True
+    
+    def match(self, other):
+        if self.isJoker() and other.isJoker():
+            print("Joker comparison!")
+            return True
+        elif self.rank == other.rank and self.suit == other.suit:
+            return True
+        print("No match!")
+        return False
 
 class Deck:
     def __repr__(self):
