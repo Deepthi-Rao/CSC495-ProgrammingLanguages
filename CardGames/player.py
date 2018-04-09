@@ -1,5 +1,5 @@
-from Hand import Hand
-from Deck import Card, Deck
+from hand import Hand
+from deck import Card, Deck
 
 class Player:
     def __repr__(self):
