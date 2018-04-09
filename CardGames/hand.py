@@ -1,4 +1,4 @@
-from Deck import Card, Deck
+from deck import Card, Deck
 
 class Hand:
     def __repr__(self):
