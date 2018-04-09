@@ -1,4 +1,4 @@
-from Deck import Card
+from deck import Card
 
 class Pile:
 
