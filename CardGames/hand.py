@@ -1,9 +1,7 @@
-from deck import Card, Deck
-
 class Hand:
     def __repr__(self):
         hand = ','.join(self.cards)
-        return self.__class__.__name__
+        return hand
         
     def __init__(self, cards, handSize):
         self.cards = cards

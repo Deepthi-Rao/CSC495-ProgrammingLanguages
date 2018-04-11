@@ -1,6 +1,6 @@
-import game
+from game import Game
 from player import Player
-from deck import Card, Deck
+from deck import Deck
 from hand import Hand
 from pile import Pile
 """TODO:make a pile and move all some deck functions into pile
@@ -9,7 +9,7 @@ from pile import Pile
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(Game.Game):
+class EgyptianRatsCrew(Game):
     
     def __init__(self, playersID):
         self.name = "Egyptian Rats Crew"
@@ -88,13 +88,6 @@ class EgyptianRatsCrew(Game.Game):
     def createPile(self):
         self.pile = Pile()
         self.deck.shuffle()
-
-    def createDeck(self):
-        self.deck = Deck()
-        self.deck.shuffle()
-
-    def createPile(self):
-        self.pile = Pile()
         
     def setCondition(self):
         for p in self.players:

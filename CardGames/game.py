@@ -1,6 +1,5 @@
 from player import Player
-from deck import Card, Deck
-from hand import Hand
+from deck import Deck
 from pile import Pile
 
 """This defines the game class """
@@ -10,14 +9,16 @@ class Game:
     #gameName will be the name of the game
     #players will be a string of player IDs
     
-    def __init__(self, gameName, player, numPlayers):
+    def __init__(self, gameName, players, numPlayers):
         self.name = gameName
         # self.currentState = startState
         self.players = [Player(p) for p in players]
         self.winner = None
         self.currentPlayer = None
-        createDeck()
-        createPile()
+        self.numPlayers = numPlayers
+        self.currentTurn = 0
+        self.createDeck()
+        self.createPile()
 
     def setTopCard(self, topCard):
         self.topCard = topCard
@@ -57,10 +58,10 @@ class Game:
         return
 
     def getPlayerCount(self):
-        return numPlayers
+        return self.numPlayers
 
     def playerTurn(self):
-        return numPlayers - turn
+        return self.numPlayers - self.currentTurn
 
     def createDeck(self):
         self.deck = Deck()
@@ -69,6 +70,6 @@ class Game:
     def createPile(self):
         self.pile = Pile()
         self.deck.shuffle()
-        setTopCard(self.pile.getFirstCard)
-        setSecondCard(self.pile.getSecondCard)
-        setThirdCard(self.pile.getThirdCard)
+        self.setTopCard(self.pile.getFirstCard)
+        self.setSecondCard(self.pile.getSecondCard)
+        self.setThirdCard(self.pile.getThirdCard)

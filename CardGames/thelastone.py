@@ -1,6 +1,7 @@
 from game import Game
 from player import Player
-from deck import Card, Deck
+from deck import Deck
+from card import Card
 from hand import Hand
 from pile import Pile
 

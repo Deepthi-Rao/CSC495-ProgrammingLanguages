@@ -1,6 +1,3 @@
-from hand import Hand
-from deck import Card, Deck
-
 class Player:
     def __repr__(self):
         return self.id
