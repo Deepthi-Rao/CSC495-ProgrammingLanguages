@@ -8,7 +8,7 @@ class Machine:
     # this initializes a machine
     def __init__(self, Game):
         self.game = Game
-        self.canAct = False; #can the player act at the beginning no
+        self.canAct = False; #can the player act at the beginning, no
         self.states = {}
 
     # this creates a state
