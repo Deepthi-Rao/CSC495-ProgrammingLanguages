@@ -1,15 +1,15 @@
-from game import Game
-from player import Player
-from deck import Deck
-from hand import Hand
-from pile import Pile
+from game_abstractions import game
+from persistant.player import Player
+from persistant.deck import Deck
+from persistant.hand import Hand
+from persistant.pile import Pile
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
         check if slappable or not
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(Game):
+class EgyptianRatsCrew(game.Game):
     
     def __init__(self, playersID):
         self.name = "Egyptian Rats Crew"

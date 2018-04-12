@@ -1,6 +1,6 @@
-from player import Player
-from deck import Deck
-from pile import Pile
+from persistant.player import Player
+from persistant.deck import Deck
+from persistant.pile import Pile
 
 """This defines the game class """
 

@@ -1,5 +1,5 @@
-from card import Card
-from stack import Stack
+from persistant.card import Card
+from utils.stack import Stack
 
 class Deck(Stack):
     def __repr__(self):
