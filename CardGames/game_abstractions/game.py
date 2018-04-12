@@ -25,13 +25,13 @@ class Game:
 
     def setSecondCard(self, secondCard):
         self.secondCard = secondCard
-    
+
     def setThirdCard(self, thirdCard):
         self.thirdCard = thirdCard
-    
+
     def getTopCard(self):
         return self.topCard
-    
+
     def getSecondCard(self):
         return self.secondCard
 
