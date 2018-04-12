@@ -1,8 +1,9 @@
 from game_abstractions import game
-from persistent.player import Player
 from persistent.deck import Deck
 from persistent.hand import Hand
 from persistent.pile import Pile
+from persistent.player import Player
+
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
         check if slappable or not
@@ -230,10 +231,10 @@ if __name__ == '__main__':
     print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
     print("")
     print("")
-    command = input("Enter a command: ")
+    command = raw_input("Enter a command: ")
     while command == "play":
         currentGame.play()
-        command = input("Enter a command: ")
+        command = raw_input("Enter a command: ")
     print("")
     print("")
     print("exiting program")

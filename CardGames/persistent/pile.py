@@ -1,9 +1,10 @@
 from utils.stack import Stack
-class Pile(Stack):
+from persistent_abstractions.faceup import FaceUp
 
-    def __init__(self, deck):
-        self.deck = deck
-        self.cards = []
+class Pile(Stack, FaceUp):
+
+    def __init__(self):
+        self.stack = []
     
     def clearCardsFromPile(self): #returns cards until that point in time
         for card in self.cards:

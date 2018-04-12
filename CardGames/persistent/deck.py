@@ -8,12 +8,12 @@ class Deck(Stack):
     def __init__(self, jokers=False):
         suits = ["Hearts","Diamonds","Spades","Clubs"]
         ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
-        self.cards = [Card(rank, suit) for rank in ranks for suit in suits]
+        self.stack = [Card(rank, suit) for rank in ranks for suit in suits]
         self.total = 52
         if jokers:
             self.cards.append(Card("joker", None))
             self.cards.append(Card("joker", None))
-            self.total = 54
+        self.total = 54
         
     def __len__(self):
         return self.size
