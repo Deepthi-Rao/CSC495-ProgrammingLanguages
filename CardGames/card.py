@@ -30,6 +30,9 @@ class Card:
         
     def dealMe(self):
         self.isDealt = True
+        
+    def returnToDeck(self):
+        self.isDealt = False
     
     def match(self, other):
         if self.isJoker() and other.isJoker():

@@ -1,4 +1,6 @@
-class Hand:
+from faceup import FaceUp
+
+class Hand(FaceUp):
     def __repr__(self):
         hand = ','.join(self.cards)
         return hand
@@ -6,12 +8,6 @@ class Hand:
     def __init__(self, cards, handSize):
         self.cards = cards
         self.numCards = handSize
-
-    def getFirstCard(self): #first from top
-        if(self.numCards > 0):
-            return self.cards.pop(self.cards.__len__() - 1) #last card in array is the top card
-        else:
-            raise IndexError
 
     def getCardsInHand(self):
         return self.cards

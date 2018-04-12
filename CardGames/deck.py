@@ -1,7 +1,7 @@
-import sys, traceback, time, random
 from card import Card
+from stack import Stack
 
-class Deck:
+class Deck(Stack):
     def __repr__(self):
         return self.__class__.__name__
         
@@ -16,10 +16,7 @@ class Deck:
             self.total = 54
         
     def __len__(self):
-        return len(self.cards)
-            
-    def shuffle(self):
-        random.shuffle(self.cards)
+        return self.size
   
     def deal(self, handSize):
         i = 0
@@ -30,6 +27,3 @@ class Deck:
                 i += 1
                 yield self.cards.pop(j)
             j += 1
-
-    def pop(self, indx):
-        return self.cards.pop(indx)
