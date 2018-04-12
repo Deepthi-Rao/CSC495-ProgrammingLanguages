@@ -10,6 +10,14 @@ class Machine:
         self.game = Game
         self.canAct = False; #can the player act at the beginning, no
         self.states = {}
+        self.actions = []
+
+    def addAction(self, action):
+        self.actions.append(action)
+
+    def handleMsg(msg):
+        for action in self.actions:
+            action(msg)
 
     # this creates a state
     def createState(self, stateName):
