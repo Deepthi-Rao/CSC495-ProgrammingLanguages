@@ -1,19 +1,13 @@
-from deck import Card, Deck
+from persistent_abstractions.faceup import FaceUp
 
-class Hand:
+class Hand(FaceUp):
     def __repr__(self):
         hand = ','.join(self.cards)
-        return self.__class__.__name__
+        return hand
         
     def __init__(self, cards, handSize):
         self.cards = cards
         self.numCards = handSize
-
-    def getFirstCard(self): #first from top
-        if(self.numCards > 0):
-            return self.cards.pop(self.cards.__len__() - 1) #last card in array is the top card
-        else:
-            raise IndexError
 
     def getCardsInHand(self):
         return self.cards

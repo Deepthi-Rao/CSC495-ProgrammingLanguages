@@ -1,15 +1,16 @@
-import game
-from player import Player
-from deck import Card, Deck
-from hand import Hand
-from pile import Pile
+from game_abstractions import game
+from persistent.deck import Deck
+from persistent.hand import Hand
+from persistent.pile import Pile
+from persistent.player import Player
+
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
         check if slappable or not
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(Game.Game):
+class EgyptianRatsCrew(game.Game):
     
     def __init__(self, playersID):
         self.name = "Egyptian Rats Crew"
@@ -88,13 +89,6 @@ class EgyptianRatsCrew(Game.Game):
     def createPile(self):
         self.pile = Pile()
         self.deck.shuffle()
-
-    def createDeck(self):
-        self.deck = Deck()
-        self.deck.shuffle()
-
-    def createPile(self):
-        self.pile = Pile()
         
     def setCondition(self):
         for p in self.players:
@@ -237,10 +231,10 @@ if __name__ == '__main__':
     print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
     print("")
     print("")
-    command = input("Enter a command: ")
+    command = raw_input("Enter a command: ")
     while command == "play":
         currentGame.play()
-        command = input("Enter a command: ")
+        command = raw_input("Enter a command: ")
     print("")
     print("")
     print("exiting program")

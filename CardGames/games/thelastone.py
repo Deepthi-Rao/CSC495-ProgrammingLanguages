@@ -1,8 +1,9 @@
-from game import Game
-from player import Player
-from deck import Card, Deck
-from hand import Hand
-from pile import Pile
+from game_abstractions.game import Game
+from persistent.player import Player
+from persistent.deck import Deck
+from persistent.card import Card
+from persistent.hand import Hand
+from persistent.pile import Pile
 
 class State():
     def __repr__(self):
