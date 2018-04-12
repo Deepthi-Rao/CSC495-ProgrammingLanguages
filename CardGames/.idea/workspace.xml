@@ -10,40 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="egyptainratscrew.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/games/egyptainratscrew.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-984">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <marker date="1523493190000" expanded="true" signature="0:170" ph="import ..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="slapmachine.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/machines/slapmachine.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stack.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/stack.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -55,7 +22,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/persistent/deck.py" />
+        <option value="$PROJECT_DIR$/persistent/hand.py" />
         <option value="$PROJECT_DIR$/games/egyptainratscrew.py" />
+        <option value="$PROJECT_DIR$/games/thelastone.py" />
       </list>
     </option>
   </component>
@@ -92,16 +62,6 @@
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="client_server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="game_abstractions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
               <item name="games" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -117,17 +77,12 @@
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="persistant" type="462c0819:PsiDirectoryNode" />
+              <item name="persistent" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="persistant_abstractions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="persistent_abstractions" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -253,17 +208,79 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/deck.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="32" lean-forward="true" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/card.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/hand.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/games/egyptainratscrew.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-984">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1523493190000" expanded="true" signature="0:170" ph="import ..." />
-          </folding>
+        <state relative-caret-position="45">
+          <caret line="3" column="32" lean-forward="true" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/games/thelastone.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="32" lean-forward="true" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/machines/slapmachine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent_abstractions/facedown.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/pile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistent/specialcards_tlo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />

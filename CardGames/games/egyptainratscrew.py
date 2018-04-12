@@ -1,8 +1,8 @@
 from game_abstractions import game
-from persistant.player import Player
-from persistant.deck import Deck
-from persistant.hand import Hand
-from persistant.pile import Pile
+from persistent.player import Player
+from persistent.deck import Deck
+from persistent.hand import Hand
+from persistent.pile import Pile
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
         check if slappable or not

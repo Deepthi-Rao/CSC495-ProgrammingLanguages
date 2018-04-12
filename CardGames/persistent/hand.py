@@ -1,4 +1,4 @@
-from persistant_abstractions.faceup import FaceUp
+from persistent_abstractions.faceup import FaceUp
 
 class Hand(FaceUp):
     def __repr__(self):

@@ -1,4 +1,4 @@
-from persistant.card import Card
+from persistent.card import Card
 from utils.stack import Stack
 
 class Deck(Stack):
