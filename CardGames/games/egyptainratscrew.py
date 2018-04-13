@@ -1,8 +1,5 @@
 from game_abstractions.game import Game
-from persistent.deck import Deck
 from persistent.hand import Hand
-from persistent.pile import Pile
-from persistent.player import Player
 
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
@@ -13,22 +10,18 @@ from persistent.player import Player
 class EgyptianRatsCrew(Game):
     
     def __init__(self, playersID):
+        super()
         self.name = "Egyptian Rats Crew"
-        self.players = [Player(p) for p in playersID]
-        self.playerstrings = playersID
-        self.numPlayers = len(self.players)
+        self.numPlayers = len(playersID)
         if(52 % self.numPlayers == 0):
             self.handSize = 52 / self.numPlayers
 
         #else: #handles over flow cards
             #redistribute()
 
+        super.setPlayers(self.numPlayers, playersID)
+        
         self.currentPlayer = self.players[0] #first entered is the first player
-        self.turn = 0
-        self.pile = None
-        self.deck = None
-        self.createDeck()
-        self.createPile()
         self.setCondition()
         self.currentState = Begin(self)
         self.msgs = []
@@ -63,14 +56,6 @@ class EgyptianRatsCrew(Game):
     def getPlayer(self, turn):
         assert isinstance(turn, int)
         return self.players[turn]
-    
-    def createDeck(self):
-        self.deck = Deck()
-        self.deck.shuffle()
-
-    def createPile(self):
-        self.pile = Pile()
-        self.deck.shuffle()
         
     def setCondition(self):
         for p in self.players:
@@ -213,10 +198,10 @@ if __name__ == '__main__':
     print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
     print("")
     print("")
-    command = raw_input("Enter a command: ")
+    command = input("Enter a command: ")
     while command == "play":
         currentGame.play()
-        command = raw_input("Enter a command: ")
+        command = input("Enter a command: ")
     print("")
     print("")
     print("exiting program")

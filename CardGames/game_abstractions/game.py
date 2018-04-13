@@ -34,7 +34,14 @@ class Game:
         self.winner = winner
 
     def runGame(self):
+        if self.name == "ERS" or self.name == "Egyptian Rat Screw":
+            self.selectDeck(False)
+        elif self.name == "TLO" or self.name == "The Last One":
+            self.selectDeck(True)
         self.deck.shuffle()
 
     def getPlayerCount(self):
         return self.numPlayers
+    
+    def fetchMsgs(self):
+        pass
