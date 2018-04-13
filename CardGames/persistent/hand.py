@@ -6,8 +6,7 @@ class Hand(FaceUp):
         return hand
         
     def __init__(self, cards, handSize):
-        self.cards = cards
-        self.numCards = handSize
+        self.cards, self.numCards = cards, handSize
 
     def getCardsInHand(self):
         return self.cards
@@ -27,6 +26,6 @@ class Hand(FaceUp):
         self.numCards += 1
         
     def discard(self, card):
-        self.cards.remove(card)
         self.numCards -= 1
+        return self.cards.remove(card)
         

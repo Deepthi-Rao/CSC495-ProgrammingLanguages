@@ -1,8 +1,5 @@
-from game_abstractions import game
-from persistent.deck import Deck
+from game_abstractions.game import Game
 from persistent.hand import Hand
-from persistent.pile import Pile
-from persistent.player import Player
 
 """TODO:make a pile and move all some deck functions into pile
         make it so that each player plays their top card
@@ -10,49 +7,27 @@ from persistent.player import Player
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(game.Game):
+class EgyptianRatsCrew(Game):
     
     def __init__(self, playersID):
+        super()
         self.name = "Egyptian Rats Crew"
-        self.players = [Player(p) for p in playersID]
-        self.playerstrings = playersID
-        self.numPlayers = len(self.players)
+        self.numPlayers = len(playersID)
         if(52 % self.numPlayers == 0):
             self.handSize = 52 / self.numPlayers
 
         #else: #handles over flow cards
             #redistribute()
 
+        super.setPlayers(self.numPlayers, playersID)
+        
         self.currentPlayer = self.players[0] #first entered is the first player
-        self.turn = 0
-        self.pile = None
-        self.deck = None
-        self.createDeck()
-        self.createPile()
         self.setCondition()
         self.currentState = Begin(self)
         self.msgs = []
 
     def getPile(self):
         return self.pile
-
-    def setTopCard(self, topCard):
-        self.topCard = topCard
-
-    def setSecondCard(self, secondCard):
-        self.secondCard = secondCard
-    
-    def setThirdCard(self, thirdCard):
-        self.thirdCard = thirdCard
-    
-    def getTopCard(self):
-        return self.pile.getFirstCard()
-    
-    def getSecondCard(self):
-        return self.pile.getSecondCard()
-
-    def getThirdCard(self):
-        return self.thirdCard
 
     def setCurrentPlayer(self):
         self.currentPlayer = self.players[self.turn % self.numPlayers]
@@ -81,14 +56,6 @@ class EgyptianRatsCrew(game.Game):
     def getPlayer(self, turn):
         assert isinstance(turn, int)
         return self.players[turn]
-    
-    def createDeck(self):
-        self.deck = Deck()
-        self.deck.shuffle()
-
-    def createPile(self):
-        self.pile = Pile()
-        self.deck.shuffle()
         
     def setCondition(self):
         for p in self.players:
@@ -136,7 +103,7 @@ class Begin(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard) #adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
@@ -152,7 +119,7 @@ class Slappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
@@ -174,7 +141,7 @@ class NonSlappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
@@ -231,10 +198,10 @@ if __name__ == '__main__':
     print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
     print("")
     print("")
-    command = raw_input("Enter a command: ")
+    command = input("Enter a command: ")
     while command == "play":
         currentGame.play()
-        command = raw_input("Enter a command: ")
+        command = input("Enter a command: ")
     print("")
     print("")
     print("exiting program")

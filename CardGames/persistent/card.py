@@ -10,9 +10,7 @@ class Card:
         return str(self.rank) + " of " + self.suit
         
     def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
-        self.isDealt = False
+        self.rank, self.suit, self.isDealt = rank, suit, False
     
     def getSuit(self):
         return self.suit
