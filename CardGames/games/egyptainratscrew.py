@@ -1,4 +1,4 @@
-from game_abstractions import game
+from game_abstractions.game import Game
 from persistent.deck import Deck
 from persistent.hand import Hand
 from persistent.pile import Pile
@@ -10,7 +10,7 @@ from persistent.player import Player
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(game.Game):
+class EgyptianRatsCrew(Game):
     
     def __init__(self, playersID):
         self.name = "Egyptian Rats Crew"
@@ -35,24 +35,6 @@ class EgyptianRatsCrew(game.Game):
 
     def getPile(self):
         return self.pile
-
-    def setTopCard(self, topCard):
-        self.topCard = topCard
-
-    def setSecondCard(self, secondCard):
-        self.secondCard = secondCard
-    
-    def setThirdCard(self, thirdCard):
-        self.thirdCard = thirdCard
-    
-    def getTopCard(self):
-        return self.pile.getFirstCard()
-    
-    def getSecondCard(self):
-        return self.pile.getSecondCard()
-
-    def getThirdCard(self):
-        return self.thirdCard
 
     def setCurrentPlayer(self):
         self.currentPlayer = self.players[self.turn % self.numPlayers]
@@ -136,7 +118,7 @@ class Begin(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard) #adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
@@ -152,7 +134,7 @@ class Slappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))
@@ -174,7 +156,7 @@ class NonSlappable(State):
     def processCurrent(self, Game):
         Game.setCurrentPlayer()
         Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playCard()
+        playingCard = Game.getCurrentPlayer().playTopCard()
         Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
         Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
               + str(playingCard.getRank()))

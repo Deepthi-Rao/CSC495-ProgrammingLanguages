@@ -19,11 +19,5 @@ class Deck(Stack):
         return self.size
   
     def deal(self, handSize):
-        i = 0
-        j = 0
-        while i < handSize and j < self.total:
-            if not self.cards[j].isDealt:
-                self.cards[j].dealMe()
-                i += 1
-                yield self.cards.pop(j)
-            j += 1
+        draw = [self.cards[i] for i in range(handSize)]
+        return draw
