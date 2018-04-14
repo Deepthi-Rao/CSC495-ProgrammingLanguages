@@ -1,5 +1,6 @@
 import argparse
 import socket, threading
+from nettools import *
 from EgyptianRatsCrew import EgyptianRatsCrew
 
 ADMIN = 'Server'
@@ -17,9 +18,6 @@ controller = None
 gameMaster = None
 gmLock = threading.Lock()
 clientThreads = []
-msgQueue = []
-msgEvent = threading.Event()
-running = True
 game = None
 
 def cmdline():
@@ -27,38 +25,31 @@ def cmdline():
     parser.add_argument('-p', '--port', type=int, default=2222, help='server port number')
     return parser.parse_args()
 
-class Client(threading.Thread):
-    def __init__(self, cs, addr):
-        super().__init__()
-        self.cs = cs
-        self.addr = addr
-        self.playerName = ''
-        self.nameset = False
+class Client(CommThread):
+    def __init__(self, sock, addr):
+        super().__init__(sock)
+        self.addr, self.playerName, self.nameset = addr, '', False
 
     def run(self):
         self.send('Input player name')
-        msg = ''
-        pkt = self.cs.recv(2048)
-        while pkt != b'':
-            msg += str(pkt, encoding='utf-8')
-            if msg[-1] == '\n':
-                if self.nameset == False:
-                    if self.setName(msg[:-1]):
-                        print('{} has name {}'.format(self.addr, self.playerName))
-                        msgQueue.append((controller, 'CONNECT ' + self.playerName))
-                        msgEvent.set()
-                    else:
-                        self.send('Invalid player name. Enter a new one')
-                else:
-                    msgQueue.append((self, msg[:-1]))
+        msg = self.receive()
+        while msg:
+            if self.nameset == False:
+                if self.setName(msg):
+                    print('{} has name {}'.format(self.addr, self.playerName))
+                    msgQueue.enqueue((controller, 'CONNECT ' + self.playerName))
                     msgEvent.set()
-                msg = ''
-            pkt = self.cs.recv(2048)
-        self.cs.shutdown(socket.SHUT_RDWR)
-        self.cs.close()
+                else:
+                    self.send('Invalid player name. Enter a new one')
+            else:
+                msgQueue.enqueue((self, msg))
+                msgEvent.set()
+            msg = self.receive()
+        self.sock.shutdown(socket.SHUT_RDWR)
+        self.sock.close()
         print('{} ({}) has disconnected'.format(self.addr, self.playerName))
         if running:
-            msgQueue.append((controller, 'DISCONNECT ' + self.playerName))
+            msgQueue.enqueue((controller, 'DISCONNECT ' + self.playerName))
             msgEvent.set()
         clientThreads.remove(self)
         with gmLock:
@@ -83,20 +74,8 @@ class Client(threading.Thread):
                 setGameMaster(self)
         return True
 
-    def send(self, msg):
-        msg = msg + '\n'
-        charssent = 0
-        while charssent < len(msg):
-            try:
-                sent = self.cs.send(msg[charssent:].encode(encoding='utf-8'))
-            except (BrokenPipeError, OSError):
-                sent = 0
-            if sent == 0:
-                return
-            charssent += sent
-
     def exit(self):
-        self.cs.shutdown(socket.SHUT_WR)
+        self.sock.shutdown(socket.SHUT_WR)
 
 def setGameMaster(client):
     # setGameMaster must be called within "with gmLock"
@@ -104,7 +83,7 @@ def setGameMaster(client):
     gameMaster = client
     if client != None:
         print('{} is now the Game Master'.format(client.playerName))
-        msgQueue.append((controller, 'MASTER ' + client.playerName))
+        msgQueue.enqueue((controller, 'MASTER ' + client.playerName))
         msgEvent.set()
     else:
         print('Game Master is no longer set')
@@ -154,8 +133,8 @@ def controllerMain():
     while running:
         msgEvent.wait()
         msgEvent.clear()
-        while len(msgQueue) > 0:
-            msg = msgQueue.pop(0)
+        while msgQueue.notEmpty():
+            msg = msgQueue.dequeue()
             responseList = processMsg(msg[0].playerName, msg[1])
             for r in responseList:
                 print(r[1])
@@ -174,22 +153,22 @@ if __name__ == "__main__":
     print('Port: {}'.format(args.port))
     listener.listen(5)
     while running:
-        cs = None
+        sock = None
         try:
-            cs, addr = listener.accept()
+            sock, addr = listener.accept()
             print('New connection from {}'.format(addr))
-            t = Client(cs, addr)
+            t = Client(sock, addr)
             clientThreads.append(t)
             t.start()
         except KeyboardInterrupt:
-            if cs:
-                cs.close()
+            if sock:
+                sock.close()
             listener.close()
             running = False
             msgEvent.set()
         except OSError:
-            if cs:
-                cs.close()
+            if sock:
+                sock.close()
             break
     controller.join()
     print('Shutting down')
