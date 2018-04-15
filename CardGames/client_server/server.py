@@ -2,9 +2,9 @@ import argparse
 import socket, threading
 from nettools import *
 import sys
-sys.path.insert(1,'../utils')
-import queue
-from EgyptianRatsCrew import EgyptianRatsCrew
+sys.path.insert(1,'..')
+import utils.queue
+from games.egyptianratscrew import EgyptianRatsCrew
 
 ADMIN = 'Server'
 MIN_NAME_LENGTH = 2
@@ -105,14 +105,17 @@ def handleAdminMsg(msg):
     tokens = msg.split(' ')
     if tokens[0] == 'CONNECT':
         otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
-        responseQueue.enqueue((otherPlayers, '{}: {} has connected'.format(ADMIN, tokens[1])),
-                ([tokens[1]], ADMIN + ': ' + (('Current players are: ' + ', '.join(otherPlayers)) if len(otherPlayers) else 'No other players')))
+        responseQueue.enqueue((otherPlayers, '{}: {} has connected'.format(ADMIN, tokens[1])))
+        responseQueue.enqueue(([tokens[1]], ADMIN + ': ' + (('Current players are: ' + ', '.join(otherPlayers)) if len(otherPlayers) else 'No other players')))
+        responseEvent.set()
     elif tokens[0] == 'DISCONNECT':
         otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
         responseQueue.enqueue((otherPlayers, '{}: {} has disconnected'.format(ADMIN, tokens[1])))
+        responseEvent.set()
     elif tokens[0] == 'MASTER':
         allPlayers = [c.playerName for c in clientThreads]
         responseQueue.enqueue((allPlayers, '{}: {} is now the Game Master'.format(ADMIN, tokens[1])))
+        responseEvent.set()
     else:
         print('unknown ' + ADMIN + ' msg: ' + msg)
 
@@ -122,14 +125,17 @@ def handleGMCmdMsg(msg):
     if msgArgs[0].upper() == CMDSTART:
         if len(msgArgs) <= 1:
             responseQueue.enqueue(([playerName], 'Invalid command'))
+            responseEvent.set()
         elif msgArgs[1].upper() in ERSNAME:
             listener.close()
             game = EgyptianRatsCrew([c.playerName for c in clientThreads], (gameQueue, serverEvent), (responseQueue, responseEvent))
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.'))
+            responseEvent.set()
             gameThread = threading.Thread(target=game.run())
             gameThread.start()
         elif msgArgs[1].upper() in LASTONENAME:
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Last One not server compatible.'))
+            responseEvent.set()
     elif msgArgs[0].upper() == CMDHALT:
         running = False
 
@@ -139,6 +145,7 @@ def handleCmdMsg(name, msg):
         handleGMCmdMsg(msg)
     else:
         responseQueue.enqueue(([name], 'Invalid command'))
+        responseEvent.set()
 
 def processMsg(name, msg):
     if len(msg) == 0:
@@ -149,8 +156,10 @@ def processMsg(name, msg):
         handleCmdMsg(name, msg)
     elif game and game.name == 'Egyptian Rats Crew':
         gameQueue.enqueue((name, msg))
+        serverEvent.set()
     else:
         responseQueue.enqueue(([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg))
+        responseEvent.set()
 
 def clientSenderMain():
     while running:

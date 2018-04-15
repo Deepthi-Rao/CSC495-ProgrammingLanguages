@@ -30,7 +30,7 @@ def controllerMain():
         msgEvent.wait()
         msgEvent.clear()
         while msgQueue.notEmpty():
-            print(msgQueue.dequeue)
+            print(msgQueue.dequeue())
 
 if __name__ == "__main__":
     args = cmdline()

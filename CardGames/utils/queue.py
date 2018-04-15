@@ -1,4 +1,4 @@
-import collections import deque
+from collections import deque
 
 #This is the Queue class
 class Queue:
