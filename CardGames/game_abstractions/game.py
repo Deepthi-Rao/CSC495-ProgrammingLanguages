@@ -17,13 +17,13 @@ class Game:
     def setPlayers(self, numPlayers, players):
         self.players = [Player(p) for p in players]
         self.numPlayers = numPlayers
-        
+    
     def selectDeck(self, jokers):
         self.deck = Deck(jokers)
     
     def drawCards(self, player, numCards):
         player.getHand().addCards(self.deck.deal(numCards))
-    
+   
     def setCurrentPlayer(self, currentPlayer):
         self.currentPlayer = currentPlayer
 
