@@ -5,6 +5,7 @@ import sys
 sys.path.insert(1,'..')
 import utils.queue
 from games.egyptianratscrew import EgyptianRatScrew
+from games.thelastone import TheLastOne
 
 ADMIN = 'Server'
 MIN_NAME_LENGTH = 2
@@ -108,7 +109,7 @@ def handleAdminMsg(msg):
     else:
         print('unknown ' + ADMIN + ' msg: ' + msg)
 
-def handleGMCmdMsg(msg):
+def handleGMCmdMsg(msg, msgArgs):
     global game
     global running
     if msgArgs[0].upper() == CMDSTART:
@@ -121,14 +122,18 @@ def handleGMCmdMsg(msg):
             gameThread = threading.Thread(target=game.run())
             gameThread.start()
         elif msgArgs[1].upper() in LASTONENAME:
-            responseQueue.enqueue(([c.playerName for c in clientThreads], 'Last One not server compatible.'))
+            listener.close()
+            game = TheLastOne([c.playerName for c in clientThreads], gameQueue, responseQueue)
+            responseQueue.enqueue(([c.playerName for c in clientThreads], 'Starting Last One.'))
+            gameThread = threading.Thread(target=game.run())
+            gameThread.start()
     elif msgArgs[0].upper() == CMDHALT:
         running = False
 
 def handleCmdMsg(name, msg):
     msgArgs = msg.split(' ')
     if name == gameMaster.playerName:
-        handleGMCmdMsg(msg)
+        handleGMCmdMsg(msg, msgArgs)
     else:
         responseQueue.enqueue(([name], 'Invalid command'))
 

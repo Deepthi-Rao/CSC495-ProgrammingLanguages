@@ -9,8 +9,8 @@ class Deck(Stack):
         self.stack = [Card(rank, suit) for rank in ranks for suit in suits]
         self.total = 52
         if jokers:
-            self.cards.append(Card("Joker", None))
-            self.cards.append(Card("Joker", None))
+            self.stack.append(Card("Joker", None))
+            self.stack.append(Card("Joker", None))
         self.total = 54
         
     def __len__(self):
@@ -18,3 +18,6 @@ class Deck(Stack):
   
     def deal(self, numCards):
         return [self.pop() for _ in range(numCards)]
+
+    def draw(self):
+        return self.pop()

@@ -6,15 +6,14 @@ import time
 """This defines the game class """
 
 class Game:
-
-    #gameName will be the name of the game
-    
-    def __init__(self, gameName, players, inQueue, outQueue, *,timeLastCard=False):
+    def __init__(self, gameName, players, inQueue, outQueue, *, jokers=False, timeLastCard=False):
         self.name, self.currentTurn = gameName, 0
         self.msgsIn, self.msgsOut = inQueue, outQueue
         self.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs'],
         self.ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
-        self.pile = Pile()
+        self.deck = Deck(self.suits, self.ranks, jokers)
+        self.deck.shuffle()
+        self.discard = Pile()
         self.setPlayers(players)
         self.winner, self.currentPlayer, self.playDirection = None, self.players[0], 1
         self.rules, self.slapConditions, self.timeLastCard, self.lastCardTime = [], [], timeLastCard, None
@@ -34,7 +33,7 @@ class Game:
     
     def drawCards(self, player, numCards):
         newCards = self.deck.deal(numCards)
-        player.getHand().addCards(newCards))
+        player.getHand().addCards(newCards)
         self.sendMessage(self.thisPlayer(player), 'You drew: ' + ', '.join(newCards))
         self.sendMessage(self.otherPlayers(player), player.getName() + ' drew ' + str(len(newCards)) + ' cards')
    

@@ -7,7 +7,7 @@ from persistent.pile import Pile
 
 class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
-        super().__init__("The Last One", players, inQueue, outQueue, timeLastCard=True)
+        super().__init__("The Last One", players, inQueue, outQueue, jokers=True, timeLastCard=True)
         self.playRules = []
         self.aggressor, self.aggressee, self.isMelee = None, None, False
         self.unpassPlayers()
@@ -21,9 +21,25 @@ class TheLastOne(Game):
         self.addPlayRule(self.eightRule)
         self.addPlayRule(self.jackRule)
         self.addPlayRule(self.aceRule)
+        self.deal(6)
+        self.playFirstCard()
+
+    def deal(self, handSize):
+        for p in self.players:
+            p.setHand(Hand())
+        for _ in range(handSize):
+            for p in self.players:
+                p.getHand().addCard(self.deck.draw())
+
+    def playFirstCard(self):
+        firstCard = Card('Joker', None)
+        while firstCard.isJoker():
+            firstCard = self.deck.draw()
+            self.discard.placeOnTop(firstCard)
+
 
     def winLastOne(self, player):
-        return player.numCards() == 0:
+        return player.hasNoCards()
 
     def queryHand(self, msg, player):
         if msg.upper() == 'HAND':

@@ -7,24 +7,21 @@ class Hand(FaceUp):
     def __str__(self):
         return ', '.join(self.cards)
 
-    def __init__(self, cards, handSize):
-        self.cards, self.numCards = cards, handSize
+    def __init__(self):
+        self.cards = []
 
     def getCards(self):
         return self.cards
     
     def getNumCards(self):
-        return self.numCards
+        return len(self.cards)
     
     def addCards(self, cards):
         self.cards.extend(cards)
-        self.numCards += len(cards)
     
     def addCard(self, card):
         self.cards.append(card)
-        self.numCards += 1
         
     def discard(self, card):
-        self.numCards -= 1
         return self.cards.remove(card)
         

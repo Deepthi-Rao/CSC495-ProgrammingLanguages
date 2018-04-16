@@ -3,7 +3,7 @@ class Player:
         return self.name
         
     def __init__(self, playername):
-        self.name, self.hand, self.numCards = playername, None, 0
+        self.name, self.hand, = playername, None
     
     def getName(self):
         return self.name
@@ -27,20 +27,20 @@ class Player:
 
     def numCards(self):
         return self.hand.getNumCards()
+
+    def hasNoCards(self):
+        return self.numCards() == 0
     
     def getCardsInHand(self):
         return self.hand.getCards()
     
     def setHand(self, hand):
         self.hand = hand
-        self.numCards = hand.getNumCards()
 
     def playTopCard(self):
-        self.numCards -= 1
         return self.hand.getTopCard()
     
     def playCard(self, card):
-        self.numCards -= 1
         if self.hand.getCards().contains(card):
             return self.hand.discard(card)
         
