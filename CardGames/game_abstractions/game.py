@@ -15,7 +15,7 @@ class Game:
         self.ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.pile = Pile()
         self.setPlayers(players)
-        self.winner, self.currentPlayer = None, None
+        self.winner, self.currentPlayer, self.playDirection = None, None, 1
         self.rules, self.slapConditions = [], []
 
     def addRule(self, rule):
@@ -29,10 +29,27 @@ class Game:
         self.deck = Deck(jokers)
     
     def drawCards(self, player, numCards):
-        player.getHand().addCards(self.deck.deal(numCards))
+        newCards = self.deck.deal(numCards)
+        player.getHand().addCards(newCards))
+        self.sendMessage(self.thisPlayer(player), 'You drew: ' + ', '.join(newCards))
+        self.sendMessage(self.otherPlayers(player), player.getName() + ' drew ' + str(len(newCards)) + ' cards')
    
-    def setCurrentPlayer(self, currentPlayer):
-        self.currentPlayer = currentPlayer
+    def nextPlayer(self):
+        self.currentPlayer = self.players[self.nextPlayerIndex()]
+        self.sendMessage(self.otherPlayers(self.currentPlayer), 'It is ' + self.currentPlayer.getName() + "'s turn.")
+        self.sendMessage(self.thisPlayer(self.currentPlayer), 'It is your turn.')
+        self.sendMessage(self.thisPlayer(self.currentPlayer), 'Your hand is: ' +
+                self.currentPlayer.viewHand())
+
+    def sampleNextPlayer(self):
+        return self.players[self.nextPlayerIndex()]
+
+    def reversePlay(self):
+        self.playDirection *= -1
+
+    def nextPlayerIndex(self)
+        playerIndex = self.players.index(self.getCurrentPlayer())
+        return (playerIndex + self.playDirection) % len(selfplayers)
 
     def getCurrentPlayer(self):
         return self.currentPlayer
@@ -105,6 +122,9 @@ class Game:
     def getTopCard(self):
         return self.treatedCard
 
+    def setSuit(self, suit):
+        self.treatedCard.setSuit(suit)
+
     def nextRank(self, rank):
         if rank in self.ranks:
             rankIndex = self.ranks.index(rank)
@@ -118,6 +138,12 @@ class Game:
         player.playCard(card)
         self.discard.placeOnTop(card)
         self.treatedCard = treatedCard
+        cardString = str(card)
+        if not card == treatedCard:
+            cardString = cardString + ' as ' + str(treatedCard)
+        self.sendMessage(self.thisPlayer(player), 'You have played: ' + cardString)
+        self.sendMessage(self.otherPlayers(player), player.getName() + ' has played: ' + cardString)
+        self.canPlayAny = False
 
     def getCard(self, msg, startIndex):
         tokens = msg.upper().split()
@@ -148,3 +174,12 @@ class Game:
             if not subCard or subCard.isJoker():
                 return (None, None, 0)
         return (card, subCard, numTokens)
+
+    def extractSuit(self, msg, startIndex):
+        tokens = msg.upper().split()
+        if len(tokens) < startIndex + 1:
+            return (None, 0)
+        suit = self.canonSuit(tokens[startIndex])
+        if not suit:
+            return (None, 0)
+        return (suit, 1)
