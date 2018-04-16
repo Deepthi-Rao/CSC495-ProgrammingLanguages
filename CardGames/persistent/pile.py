@@ -1,7 +1,6 @@
 from utils.stack import Stack
-from persistent_abstractions.faceup import FaceUp
 
-class Pile(Stack, FaceUp):
+class Pile(Stack):
 
     def __init__(self):
         self.stack = []

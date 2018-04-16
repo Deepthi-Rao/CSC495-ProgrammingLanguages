@@ -41,7 +41,7 @@ class Player:
         return self.hand.getTopCard()
     
     def playCard(self, card):
-        if self.hand.getCards().contains(card):
+        if card in self.hand.getCards():
             return self.hand.discard(card)
         
     

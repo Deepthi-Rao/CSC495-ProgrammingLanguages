@@ -1,4 +1,5 @@
 from game_abstractions.game import Game
+from game_abstractions.rules import *
 from persistent.player import Player
 from persistent.deck import Deck
 from persistent.card import Card
@@ -9,7 +10,7 @@ class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
         super().__init__("The Last One", players, inQueue, outQueue, jokers=True, timeLastCard=True)
         self.playRules = []
-        self.aggressor, self.aggressee, self.isMelee = None, None, False
+        self.aggressor, self.aggressee, self.isMelee, self.canPlayAny = None, None, False, False
         self.unpassPlayers()
         self.setWinCondition(self.winLastOne)
         self.addRule(self.queryHand)
@@ -21,8 +22,12 @@ class TheLastOne(Game):
         self.addPlayRule(self.eightRule)
         self.addPlayRule(self.jackRule)
         self.addPlayRule(self.aceRule)
+        self.addPlayRule(self.playRule)
         self.deal(6)
         self.playFirstCard()
+        for p in self.players:
+            self.sendMessage(self.thisPlayer(p), p.viewHand())
+        self.sendMessage(self.allPlayers(), 'The top card is: ' + str(self.getTopCard()))
 
     def deal(self, handSize):
         for p in self.players:
@@ -36,7 +41,7 @@ class TheLastOne(Game):
         while firstCard.isJoker():
             firstCard = self.deck.draw()
             self.discard.placeOnTop(firstCard)
-
+            self.treatedCard = firstCard
 
     def winLastOne(self, player):
         return player.hasNoCards()
@@ -58,6 +63,11 @@ class TheLastOne(Game):
             failure, failedPlayer = self.failTimer(5, 5)
             if failure:
                 self.drawCards(failedPlayer, 1)
+
+    def playRule(self, msg, player, card, subCard, numTokens):
+        if self.canPlay(subCard):
+            self.playCard(player, card, subCard)
+            self.nextPlayer()
 
     def twoRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='2') and self.canPlay(subCard):
@@ -99,6 +109,7 @@ class TheLastOne(Game):
             self.nextPlayer()
 
     def play(self, msg, player):
+        print('in play')
         if self.isMelee:
             self.meleeRule(msg, player)
         else:
@@ -133,7 +144,7 @@ class TheLastOne(Game):
         elif msg.upper() == 'PASS':
             self.passPlayer(player)
             for p in self.players:
-                if not p == aggressor and p not in self.passPlayers:
+                if not p == self.aggressor and p not in self.passPlayers:
                     return
             self.sendMessage(self.allPlayers(), 'Melee has ended.')
             self.drawCards(self.aggressee, self.getValue(self.getTopCard()))
@@ -151,12 +162,14 @@ class TheLastOne(Game):
 
 
     def handlePlayRules(self, msg, player):
+        print('handle play rules')
         if player == self.getCurrentPlayer():
             if firstWord(msg) == 'PLAY':
                 card, subCard, numTokens = self.extractCard(msg, player, 1)
                 if not numTokens:
                     self.sendMessage(self.thisPlayer(player), 'Invalid Card')
                     return
+
                 for r in self.playRules:
                     r(msg, player, card, subCard, numTokens)
             elif msg.upper() == 'DRAW':
