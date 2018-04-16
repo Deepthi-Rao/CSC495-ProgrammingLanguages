@@ -33,7 +33,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rule.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="rule.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="510">
@@ -55,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="egyptianratscrew.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="egyptianratscrew.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/games/egyptianratscrew.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="610">
-              <caret line="172" column="4" lean-forward="false" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="4" />
+            <state relative-caret-position="1493">
+              <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -500,14 +500,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="60" lean-forward="false" selection-start-line="34" selection-start-column="60" selection-end-line="34" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game_abstractions/game.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="569">
@@ -518,11 +510,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/games/egyptianratscrew.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="172" column="4" lean-forward="false" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="4" />
+        <state relative-caret-position="1493">
+          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="60" lean-forward="false" selection-start-line="34" selection-start-column="60" selection-end-line="34" selection-end-column="60" />
+          <folding />
         </state>
       </provider>
     </entry>
