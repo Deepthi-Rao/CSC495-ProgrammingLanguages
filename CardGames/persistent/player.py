@@ -2,11 +2,11 @@ class Player:
     def __repr__(self):
         return self.id
         
-    def __init__(self, playerId):
-        self.id, self.hand, self.numCards = playerId, None, 0
+    def __init__(self, playername):
+        self.name, self.hand, self.numCards = playername, None, 0
     
-    def getId(self):
-        return self.id
+    def getName(self):
+        return self.name
 
     def startTurn(self):
         self.isPlaying = True;
@@ -19,8 +19,8 @@ class Player:
     
     def viewHand(self):
         if self.hand == None:
-            print("Empty hand.")
-        self.hand.showHand()
+            return "Empty hand."
+        return str(self.hand)
         
     def getHand(self):
         return self.hand

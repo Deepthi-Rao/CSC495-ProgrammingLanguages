@@ -15,9 +15,9 @@ class Machine:
     def addAction(self, action):
         self.actions.append(action)
 
-    def handleMsg(msg):
+    def handleMsg(msg, player):
         for action in self.actions:
-            action(msg)
+            action(msg, player)
 
     # this creates a state
     def createState(self, stateName):

@@ -261,75 +261,14 @@ class WinState(State):
         return self.__class__.__name__
     
 class TheLastOne(Game):
-    BEGIN = BeginState()
-    def __init__(self):
-        self.name = "The Last One"
-        self.theDeck = Deck(True)
-        self.theDeck.shuffle()
-        self.handSize = int(input("How many cards to deal? (between 4 and 8)\n"))
-        numPlayers = int(input("How many players?\n"))
-        players = []
-        for i in range(numPlayers):
-            print("Player", i, "Enter your ID: ")
-            playerID = input()
-            players.append(Player(playerID))
-        
-        self.players = players
-        self.currentPlayer = None
-        global BEGIN
-        BEGIN = BeginState()
-        self.currentState = BEGIN
-        self.numTurns = len(players)
-        self.turns = []
-        self.pile = Pile()
-        self.winner = None
-        
-    def runGame(self):
-        TURN = TurnState()
-        WIN = WinState() 
-        TWO = TwoState()
-        JACK = JackState()
-        
-        if self.handSize < 4 or self.handSize > 8:
-            print("Invalid hand size. Using default setting.")
-            self.handSize = 6
-        
-        for p in self.players:
-            cards = list(self.theDeck.deal(self.handSize))
-            hand = Hand(cards, self.handSize)
-            p.setHand(hand)
-            turn = TurnState()
-            turn.setPlayer(p)
-            print(p)
-            self.turns.append(turn)
-        
-        self.currentState = TURN
-        
-        while self.currentState != WIN:
-            for turn in self.turns:
-                self.currentPlayer = turn.player
-                print("Current Player: ", turn.player)
-                print("Active Card: ", self.pile.getFirstCard())
-                turn.player.viewHand()
-                if self.getCurrentState() != TWO and self.getCurrentState() != JACK:
-                    msg = input("Play a card or Draw: ")
-                    self.getCurrentState().processMessage(self, turn.player, msg)
-                    if turn.player.hand.getNumCardsInHand() == 0:
-                        self.currentState = WIN
-                        self.winner = self.currentPlayer
-                        break
-                elif self.getCurrentState() == TWO:
-                    turn.player.hand.addCards(list(self.theDeck.deal(2)))
-                    turn.player.viewHand()
-                    self.currentState = TurnState()   
-                elif self.getCurrentState() == JACK:
-                    turn.player.viewHand()
-                    self.currentState = TurnState() 
-            
-        
-        print(self.currentPlayer, " IS THE WINNER")
-        
-        
+    def __init__(self, players, inQueue, outQueue):
+        super().__init__("The Last One", players, inQueue, outQueue)
+        turnMachine = TurnMachine()
+        turnMachine.addRule()
+        self.addMachine()
+        queryMachine = Machine()
+        queryMachine.addRule(queryHandRule)
+
     def pickCard(self, player, cardString):
         cards = player.hand.getCardsInHand()
         if cardString.lower() == "joker":
@@ -347,10 +286,10 @@ class TheLastOne(Game):
                     return card
             
             return None
-            
-    def setState(self, state):
-        self.currentState = state
 
+def queryHandRule(msg, player):
+    if msg.upper() == 'GETHAND':
+        sendMessage(player, player.viewHand())
 
 game = TheLastOne()
 game.runGame()

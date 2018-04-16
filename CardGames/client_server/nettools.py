@@ -4,7 +4,6 @@ sys.path.insert(1,'../utils')
 import queue
 
 msgQueue = queue.Queue()
-msgEvent = threading.Event()
 running = True
 
 class CommThread(threading.Thread):

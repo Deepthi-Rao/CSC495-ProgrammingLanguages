@@ -8,15 +8,20 @@ class Game:
 
     #gameName will be the name of the game
     
-    def __init__(self, gameName):
+    def __init__(self, gameName, players, inQueue, outQueue):
         self.name, self.currentTurn = gameName, 0
+        self.msgsIn, self.msgsOut = inQueue, outQueue
         self.pile = Pile()
-        self.winner, self.currentPlayer = None
-        
+        self.setPlayers(players)
+        self.winner, self.currentPlayer = None, None
+        self.machines = []
 
-    def setPlayers(self, numPlayers, players):
+    def addMachine(self, machine):
+        self.machines.append(machine)
+
+    def setPlayers(self, players):
         self.players = [Player(p) for p in players]
-        self.numPlayers = numPlayers
+        self.numPlayers = len(players)
     
     def selectDeck(self, jokers):
         self.deck = Deck(jokers)
@@ -33,15 +38,23 @@ class Game:
     def setWinner(self, winner):
         self.winner = winner
 
-    def runGame(self):
-        if self.name == "ERS" or self.name == "Egyptian Rat Screw":
-            self.selectDeck(False)
-        elif self.name == "TLO" or self.name == "The Last One":
-            self.selectDeck(True)
-        self.deck.shuffle()
+    def run(self):
+        while not self.winner:
+            self.msgsIn.waitForEvent()
+            while self.msgsIn.notEmpty():
+                inMsg = self.msgsIn.dequeue()
+                player = self.getPlayer(inMsg[0])
+                msg = inMsg[1]
+                for machine in self.machines:
+                    machine.processMsg(msg, player)
 
     def getPlayerCount(self):
         return self.numPlayers
+
+    def getPlayer(self, playername):
+        for p in self.players:
+            if p.getName() == playername:
+                return p
     
     def fetchMsgs(self):
         pass

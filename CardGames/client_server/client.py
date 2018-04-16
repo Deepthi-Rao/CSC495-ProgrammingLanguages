@@ -18,17 +18,14 @@ class Listener(CommThread):
         msg = self.receive()
         while msg:
             msgQueue.enqueue(msg)
-            msgEvent.set()
             msg = self.receive()
         if running:
             running = False
             msgQueue.enqueue('Server connection lost. Press ENTER to exit.')
-            msgEvent.set()
 
 def controllerMain():
     while running:
-        msgEvent.wait()
-        msgEvent.clear()
+        msgQueue.waitForEvent()
         while msgQueue.notEmpty():
             print(msgQueue.dequeue())
 
@@ -50,7 +47,7 @@ if __name__ == "__main__":
         listener.send(line)
     if running:
         running = False
-        msgEvent.set()
+        msgQueue.setEvent()
         sock.shutdown(socket.SHUT_WR)
 
 # vim: set filetype=python ts=4 sw=4 expandtab:

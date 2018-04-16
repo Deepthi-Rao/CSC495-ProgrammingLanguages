@@ -4,7 +4,7 @@ from nettools import *
 import sys
 sys.path.insert(1,'..')
 import utils.queue
-from games.egyptianratscrew import EgyptianRatsCrew
+from games.egyptianratscrew import EgyptianRatScrew
 
 ADMIN = 'Server'
 MIN_NAME_LENGTH = 2
@@ -28,10 +28,6 @@ game = None
 gameQueue = queue.Queue()
 # The queue of messages for the server to handle
 responseQueue = queue.Queue()
-# Event for when the server puts a message in the queue for the game to handle
-serverEvent = threading.Event()
-# Event for when the game puts a message in the queue for the server to handle
-responseEvent = threading.Event()
 
 def cmdline():
     parser = argparse.ArgumentParser(description='Game server')
@@ -51,19 +47,16 @@ class Client(CommThread):
                 if self.setName(msg):
                     print('{} has name {}'.format(self.addr, self.playerName))
                     msgQueue.enqueue((clientGetter, 'CONNECT ' + self.playerName))
-                    msgEvent.set()
                 else:
                     self.send('Invalid player name. Enter a new one')
             else:
                 msgQueue.enqueue((self, msg))
-                msgEvent.set()
             msg = self.receive()
         self.sock.shutdown(socket.SHUT_RDWR)
         self.sock.close()
         print('{} ({}) has disconnected'.format(self.addr, self.playerName))
         if running:
             msgQueue.enqueue((clientGetter, 'DISCONNECT ' + self.playerName))
-            msgEvent.set()
         clientThreads.remove(self)
         with gmLock:
             if gameMaster == self:
@@ -97,7 +90,6 @@ def setGameMaster(client):
     if client != None:
         print('{} is now the Game Master'.format(client.playerName))
         msgQueue.enqueue((clientGetter, 'MASTER ' + client.playerName))
-        msgEvent.set()
     else:
         print('Game Master is no longer set')
 
@@ -107,15 +99,12 @@ def handleAdminMsg(msg):
         otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
         responseQueue.enqueue((otherPlayers, '{}: {} has connected'.format(ADMIN, tokens[1])))
         responseQueue.enqueue(([tokens[1]], ADMIN + ': ' + (('Current players are: ' + ', '.join(otherPlayers)) if len(otherPlayers) else 'No other players')))
-        responseEvent.set()
     elif tokens[0] == 'DISCONNECT':
         otherPlayers = [c.playerName for c in clientThreads if c.playerName != tokens[1]]
         responseQueue.enqueue((otherPlayers, '{}: {} has disconnected'.format(ADMIN, tokens[1])))
-        responseEvent.set()
     elif tokens[0] == 'MASTER':
         allPlayers = [c.playerName for c in clientThreads]
         responseQueue.enqueue((allPlayers, '{}: {} is now the Game Master'.format(ADMIN, tokens[1])))
-        responseEvent.set()
     else:
         print('unknown ' + ADMIN + ' msg: ' + msg)
 
@@ -125,17 +114,14 @@ def handleGMCmdMsg(msg):
     if msgArgs[0].upper() == CMDSTART:
         if len(msgArgs) <= 1:
             responseQueue.enqueue(([playerName], 'Invalid command'))
-            responseEvent.set()
         elif msgArgs[1].upper() in ERSNAME:
             listener.close()
-            game = EgyptianRatsCrew([c.playerName for c in clientThreads], (gameQueue, serverEvent), (responseQueue, responseEvent))
+            game = EgyptianRatScrew([c.playerName for c in clientThreads], gameQueue, responseQueue)
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.'))
-            responseEvent.set()
             gameThread = threading.Thread(target=game.run())
             gameThread.start()
         elif msgArgs[1].upper() in LASTONENAME:
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Last One not server compatible.'))
-            responseEvent.set()
     elif msgArgs[0].upper() == CMDHALT:
         running = False
 
@@ -145,7 +131,6 @@ def handleCmdMsg(name, msg):
         handleGMCmdMsg(msg)
     else:
         responseQueue.enqueue(([name], 'Invalid command'))
-        responseEvent.set()
 
 def processMsg(name, msg):
     if len(msg) == 0:
@@ -154,17 +139,14 @@ def processMsg(name, msg):
         handleAdminMsg(msg)
     elif msg[0] == CMDLEADER:
         handleCmdMsg(name, msg)
-    elif game and game.name == 'Egyptian Rats Crew':
+    elif game and game.name == 'Egyptian Rat Screw':
         gameQueue.enqueue((name, msg))
-        serverEvent.set()
     else:
         responseQueue.enqueue(([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg))
-        responseEvent.set()
 
 def clientSenderMain():
     while running:
-        responseEvent.wait()
-        responseEvent.clear()
+        responseQueue.waitForEvent()
         while responseQueue.notEmpty():
             response = responseQueue.dequeue()
             print(response[1])
@@ -174,8 +156,7 @@ def clientSenderMain():
 
 def clientGetterMain():
     while running:
-        msgEvent.wait()
-        msgEvent.clear()
+        msgQueue.waitForEvent()
         while msgQueue.notEmpty():
             msg = msgQueue.dequeue()
             processMsg(msg[0].playerName, msg[1])
@@ -206,7 +187,7 @@ if __name__ == "__main__":
                 sock.close()
             listener.close()
             running = False
-            msgEvent.set()
+            msgQueue.setEvent()
         except OSError:
             if sock:
                 sock.close()

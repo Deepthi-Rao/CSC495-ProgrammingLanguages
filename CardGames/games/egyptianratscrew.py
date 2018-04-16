@@ -7,11 +7,11 @@ from persistent.hand import Hand
         check if deck has zero cards and each player has zero card game ends"""
 #gameName will be the name of the game
 #players will be a string of player IDs
-class EgyptianRatsCrew(Game):
+class EgyptianRatScrew(Game):
     
     def __init__(self, playersID):
         super()
-        self.name = "Egyptian Rats Crew"
+        self.name = "Egyptian Rat Screw"
         self.numPlayers = len(playersID)
         if(52 % self.numPlayers == 0):
             self.handSize = 52 / self.numPlayers
@@ -173,7 +173,7 @@ class End(State):
     
 #Interaction
 if __name__ == '__main__':
-    print("____Welcome to Egyptian Rats Crew____")
+    print("____Welcome to Egyptian Rat Screw____")
     print("")
     print("")
     players = list()
@@ -191,7 +191,7 @@ if __name__ == '__main__':
     print("Player IDs " + str(players))
     print("")
     print("")
-    currentGame = EgyptianRatsCrew(players)
+    currentGame = EgyptianRatScrew(players)
     print("Game Has Started")
     print("")
     print("")
