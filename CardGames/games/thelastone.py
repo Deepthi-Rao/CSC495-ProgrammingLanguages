@@ -310,17 +310,10 @@ class TheLastOne(Game):
 
     def meleeRule(self, msg, player):
         if firstWord(msg).upper() == 'PLAY' and not player == self.aggressor:
-            card, numTokens = self.getCard(msg, 1)
-            if not card or card not in player.getCardsInHand():
+            card, subCard, numTokens = self.extractCard(msg, player, 1)
+            if not numTokens:
                 self.sendMessage(self.thisPlayer(player), 'Invalid Card')
                 return
-            subCard = card
-            if card.isJoker():
-                subCard, subTokens = self.getCard(msg, 1 + numTokens)
-                numTokens += subTokens
-                if not subCard or subCard.isJoker():
-                    self.sendMessage(self.thisPlayer(player), 'Invalid Card')
-                    return
             topCard = self.getTopCard()
             if not cardIs(subCard, rank=self.nextRank(topCard.getRank()), suit=topCard.getSuit()):
                 self.sendMessage(self.thisPlayer(player), 'Invalid Card')
