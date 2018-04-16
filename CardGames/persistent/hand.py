@@ -1,11 +1,9 @@
-from persistent_abstractions.faceup import FaceUp
-
-class Hand(FaceUp):
+class Hand:
     def __repr__(self):
-        return ', '.join(self.cards)
+        return ', '.join([str(c) for c in self.cards])
         
     def __str__(self):
-        return ', '.join(self.cards)
+        return ', '.join([str(c) for c in self.cards])
 
     def __init__(self):
         self.cards = []

@@ -119,13 +119,13 @@ def handleGMCmdMsg(msg, msgArgs):
             listener.close()
             game = EgyptianRatScrew([c.playerName for c in clientThreads], gameQueue, responseQueue)
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Starting Egyptian Rat Screw.'))
-            gameThread = threading.Thread(target=game.run())
+            gameThread = threading.Thread(target=game.run)
             gameThread.start()
         elif msgArgs[1].upper() in LASTONENAME:
             listener.close()
             game = TheLastOne([c.playerName for c in clientThreads], gameQueue, responseQueue)
             responseQueue.enqueue(([c.playerName for c in clientThreads], 'Starting Last One.'))
-            gameThread = threading.Thread(target=game.run())
+            gameThread = threading.Thread(target=game.run)
             gameThread.start()
     elif msgArgs[0].upper() == CMDHALT:
         running = False
@@ -138,14 +138,17 @@ def handleCmdMsg(name, msg):
         responseQueue.enqueue(([name], 'Invalid command'))
 
 def processMsg(name, msg):
+    print('processing msg')
     if len(msg) == 0:
         return
     elif name == ADMIN:
         handleAdminMsg(msg)
     elif msg[0] == CMDLEADER:
         handleCmdMsg(name, msg)
-    elif game and game.name == 'Egyptian Rat Screw':
+    elif game:
+        print('try to put msg in qame queue')
         gameQueue.enqueue((name, msg))
+        print('Put msg in game queue')
     else:
         responseQueue.enqueue(([c.playerName for c in clientThreads if c.playerName != name], name + ': ' + msg))
 
@@ -165,6 +168,7 @@ def clientGetterMain():
         while msgQueue.notEmpty():
             msg = msgQueue.dequeue()
             processMsg(msg[0].playerName, msg[1])
+            print('Left processMsg')
 
 if __name__ == "__main__":
     args = cmdline()

@@ -1,6 +1,7 @@
 from persistent.player import Player
 from persistent.deck import Deck
 from persistent.pile import Pile
+from persistent.card import Card
 import time
 
 """This defines the game class """
@@ -9,7 +10,7 @@ class Game:
     def __init__(self, gameName, players, inQueue, outQueue, *, jokers=False, timeLastCard=False):
         self.name, self.currentTurn = gameName, 0
         self.msgsIn, self.msgsOut = inQueue, outQueue
-        self.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs'],
+        self.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
         self.ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.deck = Deck(self.suits, self.ranks, jokers)
         self.deck.shuffle()
@@ -28,13 +29,10 @@ class Game:
         self.players = [Player(p) for p in players]
         self.numPlayers = len(players)
     
-    def selectDeck(self, jokers):
-        self.deck = Deck(jokers)
-    
     def drawCards(self, player, numCards):
         newCards = self.deck.deal(numCards)
         player.getHand().addCards(newCards)
-        self.sendMessage(self.thisPlayer(player), 'You drew: ' + ', '.join(newCards))
+        self.sendMessage(self.thisPlayer(player), 'You drew: ' + ', '.join([str(c) for c in newCards]))
         self.sendMessage(self.otherPlayers(player), player.getName() + ' drew ' + str(len(newCards)) + ' cards')
    
     def nextPlayer(self):
@@ -52,7 +50,7 @@ class Game:
 
     def nextPlayerIndex(self):
         playerIndex = self.players.index(self.getCurrentPlayer())
-        return (playerIndex + self.playDirection) % len(selfplayers)
+        return (playerIndex + self.playDirection) % len(self.players)
 
     def getCurrentPlayer(self):
         return self.currentPlayer
@@ -67,6 +65,7 @@ class Game:
                 inMsg = self.msgsIn.dequeue()
                 player = self.getPlayer(inMsg[0])
                 msg = inMsg[1]
+                print(msg)
                 for rule in self.rules:
                     rule(msg, player)
         self.sendMessage(self.allPlayers(), self.winner.getName() + ' has won the game!')
@@ -160,7 +159,9 @@ class Game:
         return None
 
     def playCard(self, player, card, treatedCard):
-        player.playCard(card)
+        print('playing card')
+        if not player.playCard(card):
+            return
         self.discard.placeOnTop(card)
         self.treatedCard = treatedCard
         cardString = str(card)
