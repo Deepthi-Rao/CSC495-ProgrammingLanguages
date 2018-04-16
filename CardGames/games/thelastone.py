@@ -7,10 +7,11 @@ from persistent.pile import Pile
 
 class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
-        super().__init__("The Last One", players, inQueue, outQueue)
+        super().__init__("The Last One", players, inQueue, outQueue, timeLastCard=True)
         self.playRules = []
         self.aggressor, self.aggressee, self.isMelee = None, None, False
         self.unpassPlayers()
+        self.setWinCondition(self.winLastOne)
         self.addRule(self.queryHand)
         self.addRule(self.queryOthersCardNums)
         self.addRule(self.play)
@@ -21,6 +22,9 @@ class TheLastOne(Game):
         self.addPlayRule(self.jackRule)
         self.addPlayRule(self.aceRule)
 
+    def winLastOne(self, player):
+        return player.numCards() == 0:
+
     def queryHand(self, msg, player):
         if msg.upper() == 'HAND':
             self.sendMessage(self.thisPlayer(player), player.viewHand())
@@ -28,6 +32,16 @@ class TheLastOne(Game):
     def queryOthersCardNums(self, msg, player):
         if msg.upper() == 'OTHERS':
             self.sendMessage(self.thisPlayer(player), self.othersHands(player))
+
+    def callLast(self, msg, player):
+        if self.lastCardTime and msg.upper() == 'LAST ONE':
+            self.unsetTimer(player)
+
+    def callFail(self, msg, player):
+        if self.lastCardTime and msg.upper() == 'FAILED TO CALL':
+            failure, failedPlayer = self.failTimer(5, 5)
+            if failure:
+                self.drawCards(failedPlayer, 1)
 
     def twoRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='2') and self.canPlay(subCard):

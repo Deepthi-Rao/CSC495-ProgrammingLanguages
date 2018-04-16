@@ -1,6 +1,7 @@
 from persistent.player import Player
 from persistent.deck import Deck
 from persistent.pile import Pile
+import time
 
 """This defines the game class """
 
@@ -8,15 +9,18 @@ class Game:
 
     #gameName will be the name of the game
     
-    def __init__(self, gameName, players, inQueue, outQueue):
+    def __init__(self, gameName, players, inQueue, outQueue, *,timeLastCard=False):
         self.name, self.currentTurn = gameName, 0
         self.msgsIn, self.msgsOut = inQueue, outQueue
         self.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs'],
         self.ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K']
         self.pile = Pile()
         self.setPlayers(players)
-        self.winner, self.currentPlayer, self.playDirection = None, None, 1
-        self.rules, self.slapConditions = [], []
+        self.winner, self.currentPlayer, self.playDirection = None, self.players[0], 1
+        self.rules, self.slapConditions, self.timeLastCard, self.lastCardTime = [], [], timeLastCard, None
+
+    def setWinCondition(self, condition):
+        self.winCondition = condition
 
     def addRule(self, rule):
         self.rules.append(rule)
@@ -35,7 +39,7 @@ class Game:
         self.sendMessage(self.otherPlayers(player), player.getName() + ' drew ' + str(len(newCards)) + ' cards')
    
     def nextPlayer(self):
-        self.currentPlayer = self.players[self.nextPlayerIndex()]
+        self.currentPlayer = self.sampleNextPlayer()
         self.sendMessage(self.otherPlayers(self.currentPlayer), 'It is ' + self.currentPlayer.getName() + "'s turn.")
         self.sendMessage(self.thisPlayer(self.currentPlayer), 'It is your turn.')
         self.sendMessage(self.thisPlayer(self.currentPlayer), 'Your hand is: ' +
@@ -47,7 +51,7 @@ class Game:
     def reversePlay(self):
         self.playDirection *= -1
 
-    def nextPlayerIndex(self)
+    def nextPlayerIndex(self):
         playerIndex = self.players.index(self.getCurrentPlayer())
         return (playerIndex + self.playDirection) % len(selfplayers)
 
@@ -66,6 +70,7 @@ class Game:
                 msg = inMsg[1]
                 for rule in self.rules:
                     rule(msg, player)
+        self.sendMessage(self.allPlayers(), self.winner.getName() + ' has won the game!')
 
     def canonRank(self, rank):
         upperRank = rank.upper()
@@ -108,6 +113,27 @@ class Game:
                 return True
         return False
 
+    def timeDif(self, oldTime):
+        return time.time() - oldTime
+
+    def setTimer(self, player):
+        self.lastCardTime = None
+        if player.numCards() == 1 and self.timeLastCard:
+            self.lastCardTime = (player, time.time())
+
+    def unsetTimer(self, player):
+        if self.lastCardTime and player == self.lastCardTime[0]:
+            self.lastCardTime = None
+
+    def failTimer(self, graceTime, failTime):
+        if self.lastCardTime:
+            dt = self.timeDif(self.lastCardTime[1])
+            if dt > graceTime and dt < graceTime + failTime:
+                player = self.lastCardTime[0]
+                self.lastCardTime = None
+                return (True, player)
+        return (False, None)
+
     def othersHands(self, player):
         return ', '.join([p.getName() + ': ' + str(p.numCards()) for p in self.players if not p == player])
 
@@ -143,6 +169,9 @@ class Game:
             cardString = cardString + ' as ' + str(treatedCard)
         self.sendMessage(self.thisPlayer(player), 'You have played: ' + cardString)
         self.sendMessage(self.otherPlayers(player), player.getName() + ' has played: ' + cardString)
+        if self.winCondition(player):
+            self.setWinner(player)
+        self.setTimer(player)
         self.canPlayAny = False
 
     def getCard(self, msg, startIndex):
