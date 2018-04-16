@@ -109,7 +109,6 @@ class TheLastOne(Game):
             self.nextPlayer()
 
     def play(self, msg, player):
-        print('in play')
         if self.isMelee:
             self.meleeRule(msg, player)
         else:
@@ -162,7 +161,6 @@ class TheLastOne(Game):
 
 
     def handlePlayRules(self, msg, player):
-        print('handle play rules')
         if player == self.getCurrentPlayer():
             if firstWord(msg) == 'PLAY':
                 card, subCard, numTokens = self.extractCard(msg, player, 1)

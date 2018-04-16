@@ -21,5 +21,8 @@ class Hand:
         self.cards.append(card)
         
     def discard(self, card):
-        return self.cards.remove(card)
+        if card in self.cards:
+            self.cards.remove(card)
+            return True
+        return False
         

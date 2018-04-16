@@ -7,7 +7,7 @@ import time
 """This defines the game class """
 
 class Game:
-    def __init__(self, gameName, players, inQueue, outQueue, *, jokers=False, timeLastCard=False):
+    def __init__(self, gameName, players, inQueue, outQueue, *, jokers=False, timeLastCard=False, mysteryHand=False):
         self.name, self.currentTurn = gameName, 0
         self.msgsIn, self.msgsOut = inQueue, outQueue
         self.suits = ['Hearts', 'Diamonds', 'Spades', 'Clubs']
@@ -17,7 +17,7 @@ class Game:
         self.discard = Pile()
         self.setPlayers(players)
         self.winner, self.currentPlayer, self.playDirection = None, self.players[0], 1
-        self.rules, self.slapConditions, self.timeLastCard, self.lastCardTime = [], [], timeLastCard, None
+        self.rules, self.timeLastCard, self.lastCardTime, self.mysteryHand = [], timeLastCard, None, mysteryHand
 
     def setWinCondition(self, condition):
         self.winCondition = condition
@@ -39,8 +39,8 @@ class Game:
         self.currentPlayer = self.sampleNextPlayer()
         self.sendMessage(self.otherPlayers(self.currentPlayer), 'It is ' + self.currentPlayer.getName() + "'s turn.")
         self.sendMessage(self.thisPlayer(self.currentPlayer), 'It is your turn.')
-        self.sendMessage(self.thisPlayer(self.currentPlayer), 'Your hand is: ' +
-                self.currentPlayer.viewHand())
+        if not self.mysteryHand:
+            self.sendMessage(self.thisPlayer(self.currentPlayer), 'Your hand is: ' + self.currentPlayer.viewHand())
 
     def sampleNextPlayer(self):
         return self.players[self.nextPlayerIndex()]
@@ -65,7 +65,6 @@ class Game:
                 inMsg = self.msgsIn.dequeue()
                 player = self.getPlayer(inMsg[0])
                 msg = inMsg[1]
-                print(msg)
                 for rule in self.rules:
                     rule(msg, player)
         self.sendMessage(self.allPlayers(), self.winner.getName() + ' has won the game!')
@@ -105,12 +104,6 @@ class Game:
     def sendMessage(self, recipients, msg):
         self.msgsOut.enqueue((recipients, msg))
 
-    def isSlappable(self):
-        for condition in self.slapConditions:
-            if condition():
-                return True
-        return False
-
     def timeDif(self, oldTime):
         return time.time() - oldTime
 
@@ -135,9 +128,6 @@ class Game:
     def othersHands(self, player):
         return ', '.join([p.getName() + ': ' + str(p.numCards()) for p in self.players if not p == player])
 
-    def addSlapCondition(self, condition):
-        self.slapConditions.append(condition)
-
     def getValue(self, card):
         if card.getRank() in self.ranks:
             return self.ranks.index(card.getRank())
@@ -159,7 +149,6 @@ class Game:
         return None
 
     def playCard(self, player, card, treatedCard):
-        print('playing card')
         if not player.playCard(card):
             return
         self.discard.placeOnTop(card)
@@ -167,6 +156,17 @@ class Game:
         cardString = str(card)
         if not card == treatedCard:
             cardString = cardString + ' as ' + str(treatedCard)
+        self.sendMessage(self.thisPlayer(player), 'You have played: ' + cardString)
+        self.sendMessage(self.otherPlayers(player), player.getName() + ' has played: ' + cardString)
+        if self.winCondition(player):
+            self.setWinner(player)
+        self.setTimer(player)
+        self.canPlayAny = False
+
+    def playThisCard(self, player, card):
+        self.discard.placeOnTop(card)
+        self.treatedCard = card
+        cardString = str(card)
         self.sendMessage(self.thisPlayer(player), 'You have played: ' + cardString)
         self.sendMessage(self.otherPlayers(player), player.getName() + ' has played: ' + cardString)
         if self.winCondition(player):

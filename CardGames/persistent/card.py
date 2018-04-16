@@ -34,19 +34,3 @@ class Card:
         if self.rank == "Joker":
             return True
         return False
-    
-    def isDealt(self):
-        return self.isDealt
-        
-    def dealMe(self):
-        self.isDealt = True
-        
-    def returnToDeck(self):
-        self.isDealt = False
-    
-    def match(self, other):
-        if self.isJoker() and other.isJoker():
-            return True
-        elif str(self.rank) == str(other.rank) and self.suit == other.suit:
-            return True
-        return False

@@ -20,17 +20,17 @@ class Stack():
 
     #returns the first element on the stack
     def peekFirst(self):
-        if self.size >= 1:
+        if self.size() >= 1:
             return self.stack[-1]
 
     #returns the second element on the stack
     def peekSecond(self):
-        if self.size >= 2:
+        if self.size() >= 2:
             return self.stack[-2]
 
     #returns the third element on the stack
     def peekThird(self):
-        if self.size >= 3:
+        if self.size() >= 3:
             return self.stack[-3]
 
     #shuffles the stack

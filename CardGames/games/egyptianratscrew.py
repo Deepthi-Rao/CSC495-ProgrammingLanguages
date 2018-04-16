@@ -1,172 +1,54 @@
 from game_abstractions.game import Game
 from persistent.hand import Hand
+from persistent.deck import Deck
 
-"""TODO:make a pile and move all some deck functions into pile
-        make it so that each player plays their top card
-        check if slappable or not
-        check if deck has zero cards and each player has zero card game ends"""
-#gameName will be the name of the game
-#players will be a string of player IDs
 class EgyptianRatScrew(Game):
     
-    def __init__(self, playersID):
-        super()
-        self.name = "Egyptian Rat Screw"
-        self.numPlayers = len(playersID)
-        if(52 % self.numPlayers == 0):
-            self.handSize = 52 / self.numPlayers
+    def __init__(self, players, inQueue, outQueue):
+        super().__init__("Egyptian Rat Screw", players, inQueue, outQueue, mysteryHand=True)
+        self.slapConditions = []
+        self.setWinCondition(self.winERS)
+        self.addSlapCondition(self.doublesRule)
+        self.addSlapCondition(self.sandwichRule)
+        self.addRule(self.play)
+        self.addRule(self.slap)
+        self.deal()
 
-        #else: #handles over flow cards
-            #redistribute()
-
-        super.setPlayers(self.numPlayers, playersID)
-        
-        self.currentPlayer = self.players[0] #first entered is the first player
-        self.setCondition()
-        self.currentState = Begin(self)
-        self.msgs = []
-
-    def getPile(self):
-        return self.pile
-
-    def setCurrentPlayer(self):
-        self.currentPlayer = self.players[self.turn % self.numPlayers]
-
-    def setCurrentState(self, state):
-        self.currentState = state;
-
-    def getCurrentState(self):
-        return self.currentState
-
-    def getCurrentPlayer(self):
-        return self.currentPlayer
-
-    def getPlayerCount(self):
-        return
-    
-    def getCurrentTurn(self):
-        return self.turn % self.numPlayers
-    
-    def setCurrentTurn(self, turn):
-        self.turn = turn
-
-    def setWinner(self, winner):
-        self.winner = winner
-
-    def getPlayer(self, turn):
-        assert isinstance(turn, int)
-        return self.players[turn]
-        
-    def setCondition(self):
+    def deal(self):
         for p in self.players:
-            p.setHand(Hand(self.deck, self.handSize))
+            p.setHand(Deck([], []))
+        while self.deck.hasCards():
+            for p in self.players:
+                if self.deck.hasCards():
+                    p.getHand().shuffleInCards([self.deck.draw()])
 
-    def play(self):
-        return self.currentState.processCurrent(self)
-        
-    def appendMsg(self, msg):
-        self.msgs.append(([p.getId() for p in self.players], msg))
+    def winERS(self, player):
+        return player.getHand().size() == 52
 
-    def fetchMsgs(self):
-        tmp = self.msgs
-        self.msgs = []
-        return tmp
+    def play(self, msg, player):
+        if player == self.getCurrentPlayer() and msg.upper() == 'PLAY':
+            card = player.getHand().draw()
+            self.playThisCard(player, card)
+            self.nextPlayer()
 
-"""Begin state machine for behavior of the game"""
+    def slap(self, msg, player):
+        if msg.upper() == 'SLAP' and self.isSlappable():
+            player.getHand().shuffleInCards(self.discard.takeAllCards())
+            self.sendMessage(self.allPlayers(), player.getName() + ' has claimed the pile!')
 
-class State:
-    def __init__(self, Game):
-        self.Game = Game;
+    def isSlappable(self):
+        for condition in self.slapConditions:
+            if condition():
+                return True
+        return False
 
-    def setNextState(self, state, Game):
-        return
+    def addSlapCondition(self, condition):
+        self.slapConditions.append(condition)
 
-    def processCurrent(self, Game):
-        #custom to state
-        return
+    def doublesRule(self):
+        firstCard, secondCard = self.discard.peekFirst(), self.discard.peekSecond()
+        return firstCard and secondCard and firstCard.getRank() == secondCard.getRank()
 
-    def slappable(self, firstCard, secondCard): #most of game logic will be here regarding slaps
-        if(firstCard.getRank() == secondCard.getRank()):
-            return True
-        #elif(firstCard.getRank() == thirdCard.getRank()):
-            #return True
-        else:
-            return False
-        """TODO(when there is more time): Bottoms up
-                Tens
-                Jokers
-                4 in a Row
-                Marriage"""
-
-class Begin(State):
-
-    def processCurrent(self, Game):
-        Game.setCurrentPlayer()
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playTopCard()
-        Game.getPile().addCardToTop(playingCard) #adds a card to the pile
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
-              + str(playingCard.getRank()))
-        return self.setNextState(Game)
-
-    def setNextState(self, Game):
-        Game.setCurrentState(NonSlappable(Game))
-        Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-        Game.appendMsg("Not Slappable")
-        return Game.fetchMsgs()
-
-class Slappable(State):
-    def processCurrent(self, Game):
-        Game.setCurrentPlayer()
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playTopCard()
-        Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
-              + str(playingCard.getRank()))
-        return self.setNextState(Game)
-        
-    def setNextState(self, Game):
-        if(self.slappable(Game.getTopCard(), Game.getSecondCard())):
-            Game.setCurrentState(Slappable(Game))
-            Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            Game.appendMsg("Slappable")
-            return Game.fetchMsgs()
-        else:
-            Game.setCurrentState(NonSlappable(Game))
-            Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            Game.appendMsg("Not Slappable")
-            return Game.fetchMsgs()
-
-class NonSlappable(State):
-    def processCurrent(self, Game):
-        Game.setCurrentPlayer()
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " is playing a Card")
-        playingCard = Game.getCurrentPlayer().playTopCard()
-        Game.getPile().addCardToTop(playingCard)  # adds a card to the pile
-        Game.appendMsg(Game.getCurrentPlayer().getId() + " has played a Card with the properties: Suit " + playingCard.getSuit() + " and Rank "
-              + str(playingCard.getRank()))
-        return self.setNextState(Game)
-        
-    def setNextState(self, Game):
-        if(self.slappable(Game.getTopCard(), Game.getSecondCard())):
-            Game.setCurrentState(Slappable(Game))
-            Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            Game.appendMsg("Slappable")
-            return Game.fetchMsgs()
-        else:
-            Game.setCurrentState(NonSlappable(Game))
-            Game.setCurrentTurn(Game.getCurrentTurn() + 1)
-            Game.appendMsg("Not Slappable")
-            return Game.fetchMsgs()
-
-class End(State):
-    
-    def setWinningPlayer(self, Game):
-        Game.setWinner(Game.getCurrentPlayer())
-    
-    def processCurrent(self, Game):
-        Game.setWinner()
-    
-    def setNextState(self):
-        #nothing
-        return
+    def sandwichRule(self):
+        firstCard, thirdCard = self.discard.peekFirst(), self.discard.peekThird()
+        return firstCard and thirdCard and firstCard.getRank() == thirdCard.getRank()
