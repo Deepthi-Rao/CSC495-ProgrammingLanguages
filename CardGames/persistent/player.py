@@ -24,13 +24,16 @@ class Player:
         
     def getHand(self):
         return self.hand
+
+    def numCards(self):
+        return self.hand.getNumCards()
     
     def getCardsInHand(self):
-        return self.hand.getCardsInHand()
+        return self.hand.getCards()
     
     def setHand(self, hand):
         self.hand = hand
-        self.numCards = hand.getNumCardsInHand()
+        self.numCards = hand.getNumCards()
 
     def playTopCard(self):
         self.numCards -= 1
@@ -38,7 +41,7 @@ class Player:
     
     def playCard(self, card):
         self.numCards -= 1
-        if self.hand.getCardsInHand().contains(card):
+        if self.hand.getCards().contains(card):
             return self.hand.discard(card)
         
     

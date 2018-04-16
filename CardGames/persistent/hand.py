@@ -10,10 +10,10 @@ class Hand(FaceUp):
     def __init__(self, cards, handSize):
         self.cards, self.numCards = cards, handSize
 
-    def getCardsInHand(self):
+    def getCards(self):
         return self.cards
     
-    def getNumCardsInHand(self):
+    def getNumCards(self):
         return self.numCards
     
     def addCards(self, cards):

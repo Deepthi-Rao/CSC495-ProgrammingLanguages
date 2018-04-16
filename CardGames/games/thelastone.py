@@ -263,11 +263,8 @@ class WinState(State):
 class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
         super().__init__("The Last One", players, inQueue, outQueue)
-        turnMachine = TurnMachine()
-        turnMachine.addRule()
-        self.addMachine()
-        queryMachine = Machine()
-        queryMachine.addRule(queryHandRule)
+        self.addRule(self.queryHandRule)
+        self.addRule(
 
     def pickCard(self, player, cardString):
         cards = player.hand.getCardsInHand()
@@ -284,13 +281,13 @@ class TheLastOne(Game):
             for card in cards:
                 if card.match(myCard):
                     return card
-            
             return None
 
-def queryHandRule(msg, player):
-    if msg.upper() == 'GETHAND':
-        sendMessage(player, player.viewHand())
+    def queryHandRule(self, msg, player):
+        if msg.upper() == 'HAND':
+            self.sendMessage(self.thisPlayer(player), player.viewHand())
 
-game = TheLastOne()
-game.runGame()
+    def queryOthersCardNums(self, msg, player):
+        if msg.upper() == 'OTHERS':
+            self.sendMessage(self.thisPlayer(player), self.othersHands(player))
 

@@ -14,10 +14,10 @@ class Game:
         self.pile = Pile()
         self.setPlayers(players)
         self.winner, self.currentPlayer = None, None
-        self.machines = []
+        self.rules, self.slapConditions = [], []
 
-    def addMachine(self, machine):
-        self.machines.append(machine)
+    def addRule(self, rule):
+        self.rules.append(rule)
 
     def setPlayers(self, players):
         self.players = [Player(p) for p in players]
@@ -45,8 +45,8 @@ class Game:
                 inMsg = self.msgsIn.dequeue()
                 player = self.getPlayer(inMsg[0])
                 msg = inMsg[1]
-                for machine in self.machines:
-                    machine.processMsg(msg, player)
+                for rule in self.rules:
+                    rule(msg, player)
 
     def getPlayerCount(self):
         return self.numPlayers
@@ -56,5 +56,26 @@ class Game:
             if p.getName() == playername:
                 return p
     
-    def fetchMsgs(self):
-        pass
+    def thisPlayer(self, player):
+        return [player.getName()]
+
+    def otherPlayers(self, player):
+        return [p.getName() for p in self.players if not p == player]
+
+    def allPlayers(self):
+        return [p.getName() for p in self.players]
+
+    def sendMessage(self, recipients, msg):
+        self.msgsOut.enqueue((recipients, msg))
+
+    def isSlappable(self):
+        for condition in self.slapConditions:
+            if condition():
+                return True
+        return False
+
+    def othersHands(self, player):
+        return ', '.join([p.getName() + ': ' + str(p.numCards()) for p in self.players if not p == player])
+
+    def addSlapCondition(self, condition):
+        self.slapConditions.append(condition)
