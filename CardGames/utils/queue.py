@@ -18,12 +18,15 @@ class Queue:
     def dequeue(self):
         return self.queue.popleft()
 
+    #this sets the event
     def setEvent(self):
         self.event.set()
 
+    #this waits for the event
     def waitForEvent(self):
         self.event.wait()
         self.event.clear()
 
+    #this returns true if the queue is not empty
     def notEmpty(self):
         return len(self.queue) > 0

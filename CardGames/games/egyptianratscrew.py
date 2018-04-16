@@ -171,37 +171,3 @@ class End(State):
         #nothing
         return
     
-#Interaction
-if __name__ == '__main__':
-    print("____Welcome to Egyptian Rat Screw____")
-    print("")
-    print("")
-    players = list()
-    numPlayers = input("How many players would you like? (Please enter even number of players only) : ")
-    print("")
-    print("")
-    print("You will now be prompted for player ID, enter the IDs in the you would like the player to play")
-    for i in range(0, numPlayers):
-        player = input("What is the name of player " + str(i) + " ? ")
-        players.append(str(player))
-    print("")
-    print("")
-    print("Game is being constructed with parameters given:")
-    print("Number of Players " + str(numPlayers))
-    print("Player IDs " + str(players))
-    print("")
-    print("")
-    currentGame = EgyptianRatScrew(players)
-    print("Game Has Started")
-    print("")
-    print("")
-    print("Enter 'play' to place a card on the stack, if anything is entered game will exit")
-    print("")
-    print("")
-    command = input("Enter a command: ")
-    while command == "play":
-        currentGame.play()
-        command = input("Enter a command: ")
-    print("")
-    print("")
-    print("exiting program")
