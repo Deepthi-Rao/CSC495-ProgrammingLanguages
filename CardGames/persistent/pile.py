@@ -11,5 +11,6 @@ class Pile(Stack, FaceUp):
             card.returnToDeck()
         self.cards = [] #clear card in the pile
 
-
+    def placeOnTop(self, card):
+        self.push(card)
     

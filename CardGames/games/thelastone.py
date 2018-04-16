@@ -263,8 +263,12 @@ class WinState(State):
 class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
         super().__init__("The Last One", players, inQueue, outQueue)
-        self.addRule(self.queryHandRule)
-        self.addRule(
+        self.aggressor, self.aggressee, self.isMelee = None, None, False
+        self.unpassPlayers()
+        self.addRule(self.queryHand)
+        self.addRule(self.queryOthersCardNums)
+        self.addRule(self.play)
+
 
     def pickCard(self, player, cardString):
         cards = player.hand.getCardsInHand()
@@ -283,11 +287,54 @@ class TheLastOne(Game):
                     return card
             return None
 
-    def queryHandRule(self, msg, player):
+    def queryHand(self, msg, player):
         if msg.upper() == 'HAND':
             self.sendMessage(self.thisPlayer(player), player.viewHand())
 
     def queryOthersCardNums(self, msg, player):
         if msg.upper() == 'OTHERS':
             self.sendMessage(self.thisPlayer(player), self.othersHands(player))
+
+    def play(self, msg, player):
+        if self.isMelee:
+            self.meleeRule(msg, player)
+        else:
+            self.handlePlayRules(msg, player)
+
+    def unpassPlayers(self):
+        self.passPlayers = []
+
+    def passPlayer(self, player):
+        if player not in self.passPlayers:
+            self.passPlayers.append(player)
+
+    def meleeRule(self, msg, player):
+        if firstWord(msg).upper() == 'PLAY' and not player == self.aggressor:
+            card, numTokens = self.getCard(msg, 1)
+            if not card or card not in player.getCardsInHand():
+                self.sendMessage(self.thisPlayer(player), 'Invalid Card')
+                return
+            subCard = card
+            if card.isJoker():
+                subCard, subTokens = self.getCard(msg, 1 + numTokens)
+                numTokens += subTokens
+                if not subCard or subCard.isJoker():
+                    self.sendMessage(self.thisPlayer(player), 'Invalid Card')
+                    return
+            topCard = self.getTopCard()
+            if not cardIs(subCard, rank=self.nextRank(topCard.getRank()), suit=topCard.getSuit()):
+                self.sendMessage(self.thisPlayer(player), 'Invalid Card')
+                return
+            self.playCard(player, card, subCard)
+            self.aggressee = self.aggressor
+            self.aggressor = player
+            self.unpassPlayers()
+        elif msg.upper() == 'PASS':
+            self.passPlayer(player)
+            for p in self.players:
+                if not p == aggressor and p not in self.passPlayers:
+                    return
+            self.drawCards(self.aggressee, self.getValue(self.getTopCard()))
+            self.isMelee = False
+            self.unpassPlayers()
 

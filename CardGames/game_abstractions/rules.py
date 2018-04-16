@@ -11,3 +11,7 @@ def cardIs(card, *, rank=None, suit=None):
     if suit and not card.getSuit() == suit:
         return False
     return True
+
+def firstWord(msg):
+    return msg.split()[0]
+

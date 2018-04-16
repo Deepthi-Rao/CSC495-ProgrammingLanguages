@@ -19,7 +19,7 @@ class Card:
         return self.rank
         
     def isJoker(self):
-        if self.rank == "joker":
+        if self.rank == "Joker":
             return True
         return False
     

@@ -1,6 +1,6 @@
 class Player:
     def __repr__(self):
-        return self.id
+        return self.name
         
     def __init__(self, playername):
         self.name, self.hand, self.numCards = playername, None, 0

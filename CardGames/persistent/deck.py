@@ -5,9 +5,7 @@ class Deck(Stack):
     def __repr__(self):
         return self.__class__.__name__
         
-    def __init__(self, jokers=False):
-        suits = ["Hearts","Diamonds","Spades","Clubs"]
-        ranks = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K']
+    def __init__(self, suits, ranks, jokers=False):
         self.stack = [Card(rank, suit) for rank in ranks for suit in suits]
         self.total = 52
         if jokers:
