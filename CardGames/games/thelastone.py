@@ -5,6 +5,7 @@ from persistent.deck import Deck
 from persistent.card import Card
 from persistent.hand import Hand
 from persistent.pile import Pile
+from game_abstractions.rule import Rule
 
 class TheLastOne(Game):
     def __init__(self, players, inQueue, outQueue):
@@ -13,16 +14,6 @@ class TheLastOne(Game):
         self.aggressor, self.aggressee, self.isMelee, self.canPlayAny = None, None, False, False
         self.unpassPlayers()
         self.setWinCondition(self.winLastOne)
-        self.addRule(self.queryHand)
-        self.addRule(self.queryOthersCardNums)
-        self.addRule(self.play)
-        self.addPlayRule(self.twoRule)
-        self.addPlayRule(self.threeRule)
-        self.addPlayRule(self.fourRule)
-        self.addPlayRule(self.eightRule)
-        self.addPlayRule(self.jackRule)
-        self.addPlayRule(self.aceRule)
-        self.addPlayRule(self.playRule)
         self.deal(6)
         self.playFirstCard()
         for p in self.players:
@@ -46,14 +37,6 @@ class TheLastOne(Game):
     def winLastOne(self, player):
         return player.hasNoCards()
 
-    def queryHand(self, msg, player):
-        if msg.upper() == 'HAND':
-            self.sendMessage(self.thisPlayer(player), player.viewHand())
-
-    def queryOthersCardNums(self, msg, player):
-        if msg.upper() == 'OTHERS':
-            self.sendMessage(self.thisPlayer(player), self.othersHands(player))
-
     def callLast(self, msg, player):
         if self.lastCardTime and msg.upper() == 'LAST ONE':
             self.unsetTimer(player)
@@ -63,56 +46,6 @@ class TheLastOne(Game):
             failure, failedPlayer = self.failTimer(5, 5)
             if failure:
                 self.drawCards(failedPlayer, 1)
-
-    def playRule(self, msg, player, card, subCard, numTokens):
-        if self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.nextPlayer()
-
-    def twoRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='2') and self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.nextPlayer()
-            self.drawCards(self.getCurrentPlayer(), 2)
-            self.nextPlayer()
-
-    def threeRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='3') and self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.canPlayAny = True
-
-    def fourRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='4') and self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.startMelee()
-
-    def eightRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='8'):
-            suit, usedTokens = self.extractSuit(msg, numTokens + 1)
-            if not suit:
-                self.sendMessage(self.thisPlayer(player), 'Invalid Suit')
-                return
-            self.playCard(player, card, subCard)
-            self.setSuit(suit)
-            self.nextPlayer()
-
-    def jackRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='J') and self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.nextPlayer()
-            self.nextPlayer()
-
-    def aceRule(self, msg, player, card, subCard, numTokens):
-        if cardIs(subCard, rank='A') and self.canPlay(subCard):
-            self.playCard(player, card, subCard)
-            self.reversePlay()
-            self.nextPlayer()
-
-    def play(self, msg, player):
-        if self.isMelee:
-            self.meleeRule(msg, player)
-        else:
-            self.handlePlayRules(msg, player)
 
     def canPlay(self, card):
         return self.canPlayAny or cardRankOrSuitIs(card, rank=self.getTopCard().getRank(), suit=self.getTopCard().getSuit())
@@ -169,7 +102,7 @@ class TheLastOne(Game):
                     return
 
                 for r in self.playRules:
-                    r(msg, player, card, subCard, numTokens)
+                    Rule(msg, player, card, subCard, numTokens,self)
             elif msg.upper() == 'DRAW':
                 self.drawCards(player, 1)
 

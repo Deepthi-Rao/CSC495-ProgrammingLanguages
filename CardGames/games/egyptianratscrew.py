@@ -14,6 +14,13 @@ class EgyptianRatScrew(Game):
         self.addRule(self.slap)
         self.deal()
 
+    #this defines the play function
+    def play(self, msg, player):
+        if player == self.getCurrentPlayer() and msg.upper() == 'PLAY':
+            card = player.getHand().draw()
+            self.playThisCard(player, card)
+            self.nextPlayer()
+
     def deal(self):
         for p in self.players:
             p.setHand(Deck([], []))
@@ -25,11 +32,6 @@ class EgyptianRatScrew(Game):
     def winERS(self, player):
         return player.getHand().size() == 52
 
-    def play(self, msg, player):
-        if player == self.getCurrentPlayer() and msg.upper() == 'PLAY':
-            card = player.getHand().draw()
-            self.playThisCard(player, card)
-            self.nextPlayer()
 
     def slap(self, msg, player):
         if msg.upper() == 'SLAP' and self.isSlappable():

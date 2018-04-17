@@ -192,6 +192,7 @@ class Game:
             return (None, 0)
         return (Card(rank, suit), 3)
 
+    #This extracts the card
     def extractCard(self, msg, player, startIndex):
         card, numTokens = self.getCard(msg, startIndex)
         if not card or card not in player.getCardsInHand():
@@ -204,6 +205,7 @@ class Game:
                 return (None, None, 0)
         return (card, subCard, numTokens)
 
+    #This extracts the suit of the card being played for the server
     def extractSuit(self, msg, startIndex):
         tokens = msg.upper().split()
         if len(tokens) < startIndex + 1:
@@ -212,3 +214,7 @@ class Game:
         if not suit:
             return (None, 0)
         return (suit, 1)
+
+    #this deals the cards custom to the game
+    def deal(self):
+        return

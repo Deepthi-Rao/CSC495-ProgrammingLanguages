@@ -11,55 +11,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="state.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/machine_abstractions/state.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="queue.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/queue.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="48" lean-forward="false" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rule.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="42" column="34" lean-forward="false" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="machine.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/machine_abstractions/machine.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="18" column="35" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="17" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="egyptianratscrew.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/games/egyptianratscrew.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1493">
-              <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
+            <state relative-caret-position="390">
+              <caret line="28" column="40" lean-forward="true" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="thelastone.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/games/thelastone.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="39" lean-forward="false" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -67,16 +33,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="thelastone.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/games/thelastone.py">
+      <file leaf-file-name="thelastoneRules.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/machines/thelastoneRules.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="57" column="56" lean-forward="true" selection-start-line="57" selection-start-column="56" selection-end-line="57" selection-end-column="56" />
+            <state relative-caret-position="1209">
+              <caret line="101" column="40" lean-forward="true" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
-                <marker date="1523910741000" expanded="true" signature="233:6552" ph="..." />
-                <marker date="1523910741000" expanded="true" signature="285:355" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rule.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game_abstractions/rule.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -84,23 +58,9 @@
       <file leaf-file-name="game.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game_abstractions/game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="569">
-              <caret line="47" column="29" lean-forward="false" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
-              <folding>
-                <marker date="1523910741000" expanded="true" signature="1325:1525" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stack.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/stack.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-              <folding>
-                <marker date="1523910741000" expanded="true" signature="178:203" ph="..." />
-              </folding>
+            <state relative-caret-position="345">
+              <caret line="27" column="34" lean-forward="true" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -114,24 +74,34 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>play</find>
+      <find>run</find>
+      <find>add</find>
+      <find>cardI</find>
+    </findStrings>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/persistent/hand.py" />
-        <option value="$PROJECT_DIR$/games/thelastone.py" />
         <option value="$PROJECT_DIR$/persistent/deck.py" />
         <option value="$PROJECT_DIR$/persistent/pile.py" />
         <option value="$PROJECT_DIR$/machine_abstractions/asynchronous_machine.py" />
         <option value="$PROJECT_DIR$/machine_abstractions/synchronous_machine.py" />
         <option value="$PROJECT_DIR$/games/egyptainratscrew.py" />
         <option value="$PROJECT_DIR$/utils/stack.py" />
-        <option value="$PROJECT_DIR$/game_abstractions/game.py" />
         <option value="$PROJECT_DIR$/machine_abstractions/state.py" />
         <option value="$PROJECT_DIR$/machine_abstractions/machine.py" />
         <option value="$PROJECT_DIR$/utils/queue.py" />
-        <option value="$PROJECT_DIR$/machine_abstractions/rule.py" />
-        <option value="$PROJECT_DIR$/games/egyptianratscrew.py" />
         <option value="$PROJECT_DIR$/machine_abstractions/rule1.py" />
+        <option value="$PROJECT_DIR$/game_abstractions/game.py" />
+        <option value="$PROJECT_DIR$/games/egyptianratscrew.py" />
+        <option value="$PROJECT_DIR$/machine_abstractions/rule.py" />
+        <option value="$PROJECT_DIR$/game_abstractions/rule.py" />
+        <option value="$PROJECT_DIR$/machines/thelastoneRules.py" />
+        <option value="$PROJECT_DIR$/games/thelastone.py" />
       </list>
     </option>
   </component>
@@ -165,6 +135,11 @@
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
+              <item name="client_server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
               <item name="game_abstractions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -175,22 +150,12 @@
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="machine_abstractions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
               <item name="machines" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
               <item name="CardGames" type="462c0819:PsiDirectoryNode" />
               <item name="persistent" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CardGames" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CardGames" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -215,8 +180,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/utils" />
       <recent name="$PROJECT_DIR$/game_abstractions" />
+      <recent name="$PROJECT_DIR$/utils" />
       <recent name="$PROJECT_DIR$/machines" />
       <recent name="$PROJECT_DIR$/persistant" />
       <recent name="$PROJECT_DIR$/card_abstractions" />
@@ -277,15 +242,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24609375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24609375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917318" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32933334" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -325,9 +291,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="18" column="35" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="18" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -343,9 +307,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="38" column="29" lean-forward="true" selection-start-line="38" selection-start-column="29" selection-end-line="38" selection-end-column="29" />
-          <folding>
-            <marker date="1523910741000" expanded="true" signature="1325:1525" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -353,9 +315,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <marker date="1523910741000" expanded="true" signature="178:203" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -364,7 +324,7 @@
         <state relative-caret-position="165">
           <caret line="11" column="33" lean-forward="false" selection-start-line="11" selection-start-column="33" selection-end-line="11" selection-end-column="33" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -440,16 +400,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/stack.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <marker date="1523910741000" expanded="true" signature="178:203" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/machine_abstractions/asynchronous_machine.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -479,17 +429,7 @@
         <state relative-caret-position="435">
           <caret line="29" column="48" lean-forward="false" selection-start-line="29" selection-start-column="48" selection-end-line="29" selection-end-column="48" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/machine_abstractions/machine.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="18" column="35" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="17" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -502,39 +442,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/games/thelastone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="57" column="56" lean-forward="true" selection-start-line="57" selection-start-column="56" selection-end-line="57" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <marker date="1523910741000" expanded="true" signature="233:6552" ph="..." />
-            <marker date="1523910741000" expanded="true" signature="285:355" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game_abstractions/game.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="569">
-          <caret line="47" column="29" lean-forward="false" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="29" />
-          <folding>
-            <marker date="1523910741000" expanded="true" signature="1325:1525" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/games/egyptianratscrew.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1493">
-          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
+    <entry file="file://$PROJECT_DIR$/game_abstractions/rule.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
           <caret line="42" column="34" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="42" selection-end-column="34" />
@@ -542,11 +450,79 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/machine_abstractions/rule.py">
+    <entry file="file://$PROJECT_DIR$/utils/stack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="34" lean-forward="false" selection-start-line="42" selection-start-column="34" selection-end-line="42" selection-end-column="34" />
+        <state relative-caret-position="15">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/machines/ersRules.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/games/egyptianratscrew.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="28" column="40" lean-forward="true" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/machine_abstractions/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="39" lean-forward="true" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game_abstractions/rule.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game_abstractions/game.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="27" column="34" lean-forward="true" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/machines/thelastoneRules.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1209">
+          <caret line="101" column="40" lean-forward="true" selection-start-line="101" selection-start-column="40" selection-end-line="101" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/games/thelastone.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="39" lean-forward="false" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
