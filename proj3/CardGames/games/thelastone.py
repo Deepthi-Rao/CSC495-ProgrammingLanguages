@@ -68,6 +68,7 @@ class TheLastOne(Game):
         if self.canPlay(subCard):
             self.playCard(player, card, subCard)
             self.nextPlayer()
+            return True
 
     def twoRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='2') and self.canPlay(subCard):
@@ -75,38 +76,44 @@ class TheLastOne(Game):
             self.nextPlayer()
             self.drawCards(self.getCurrentPlayer(), 2)
             self.nextPlayer()
+            return True
 
     def threeRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='3') and self.canPlay(subCard):
             self.playCard(player, card, subCard)
             self.canPlayAny = True
+            return True
 
     def fourRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='4') and self.canPlay(subCard):
             self.playCard(player, card, subCard)
             self.startMelee()
+            return True
 
     def eightRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='8'):
             suit, usedTokens = self.extractSuit(msg, numTokens + 1)
             if not suit:
                 self.sendMessage(self.thisPlayer(player), 'Invalid Suit')
-                return
+                return True
             self.playCard(player, card, subCard)
             self.setSuit(suit)
             self.nextPlayer()
+            return True
 
     def jackRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='J') and self.canPlay(subCard):
             self.playCard(player, card, subCard)
             self.nextPlayer()
             self.nextPlayer()
+            return True
 
     def aceRule(self, msg, player, card, subCard, numTokens):
         if cardIs(subCard, rank='A') and self.canPlay(subCard):
             self.playCard(player, card, subCard)
             self.reversePlay()
             self.nextPlayer()
+            return True
 
     def play(self, msg, player):
         if self.isMelee:
@@ -169,9 +176,11 @@ class TheLastOne(Game):
                     return
 
                 for r in self.playRules:
-                    r(msg, player, card, subCard, numTokens)
+                    if r(msg, player, card, subCard, numTokens):
+                        return
             elif msg.upper() == 'DRAW':
                 self.drawCards(player, 1)
+                self.nextPlayer()
 
     def addPlayRule(self, rule):
         self.playRules.append(rule)

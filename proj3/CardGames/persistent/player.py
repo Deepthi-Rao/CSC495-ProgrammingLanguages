@@ -43,7 +43,3 @@ class Player:
     def playCard(self, card):
         if card in self.hand.getCards():
             return self.hand.discard(card)
-        
-    
-        
-        

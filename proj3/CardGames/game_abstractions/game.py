@@ -59,15 +59,18 @@ class Game:
         self.winner = winner
 
     def run(self):
-        while not self.winner:
-            self.msgsIn.waitForEvent()
-            while self.msgsIn.notEmpty():
-                inMsg = self.msgsIn.dequeue()
-                player = self.getPlayer(inMsg[0])
-                msg = inMsg[1]
-                for rule in self.rules:
-                    rule(msg, player)
-        self.sendMessage(self.allPlayers(), self.winner.getName() + ' has won the game!')
+        try:
+            while not self.winner:
+                self.msgsIn.waitForEvent()
+                while self.msgsIn.notEmpty():
+                    inMsg = self.msgsIn.dequeue()
+                    player = self.getPlayer(inMsg[0])
+                    msg = inMsg[1]
+                    for rule in self.rules:
+                        rule(msg, player)
+            self.sendMessage(self.allPlayers(), self.winner.getName() + ' has won the game!')
+        except Exception as e:
+            self.sendMessage(self.allPlayers(), 'Game is a Draw.')
 
     def canonRank(self, rank):
         upperRank = rank.upper()
@@ -130,7 +133,7 @@ class Game:
 
     def getValue(self, card):
         if card.getRank() in self.ranks:
-            return self.ranks.index(card.getRank())
+            return self.ranks.index(card.getRank()) + 1
         return 0
 
     def getTopCard(self):

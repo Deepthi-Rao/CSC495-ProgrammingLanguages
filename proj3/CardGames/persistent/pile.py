@@ -12,4 +12,3 @@ class Pile(Stack):
 
     def placeOnTop(self, card):
         self.push(card)
-    

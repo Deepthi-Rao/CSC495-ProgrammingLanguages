@@ -25,4 +25,3 @@ class Hand:
             self.cards.remove(card)
             return True
         return False
-        
