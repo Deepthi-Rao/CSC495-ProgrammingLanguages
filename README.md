@@ -6,18 +6,9 @@ Renich,Vincent
 
 Fernandez, Hanna
 
-Instructions for The Last One
+Project3 transcripts are under the proj3 directory, with the code in the CardGames directory under that.
 
-1. Clone this repository
-2. Navigate to CardGames
-3. run 'python3 theLastOne.py'
-4. Follow the prompts specified to set up the Gaming environment
-   	PLEASE BE SURE TO ENTER THE EXACT STRINGS SPECIFIED OR BEHAVIOR WILL NOT BE AS EXPECTED
-5. Each player places a card from their hand. Their hand and the current card at the top of the pile will be displayed by the program.
-	INPUTTING INVALID STRINGS WILL CAUSE THE CURRENT PLAYER TO DRAW A CARD
-6. The special cards will show specific instructions to follow.
-
-Instructions for Egyptian Rat Screw
+Instructions to Play
 
 1. Clone this repository on every machine you want to use
 2. Navigate to CardGames on every terminal you want to use
@@ -28,8 +19,24 @@ If you don't specify this, the port will be 2222.
 For this, <HOST> is the hostname of the server machine, and <PORT> is the port number that the
 server is listening on. Both of these are printed by the server when it starts.
 5. On each client terminal, enter the player name for that client.
+
+For Egyptian Rat Screw
+
 6. Using the first terminal connected (the Game Master), enter '/start ers'
 This will start the game.
-7. Using any client terminal, enter any text to proceed to the next play by a player.
+7. Using the current player's terminal, type 'play' to play the next card or 'slap' to slap the deck
 8. To exit, type 'exit' on each client terminal, and type CTRL+C on the server terminal until
    the program exits.
+
+For The Last One
+
+6. Using the first terminal connected (the Game Master), enter '/start lo'
+This will start the game.
+7. Using the current player's terminal, type 'play <rank> of <suit>' for a card in your hand to play that card (special cases for 8s and Jokers below) or 'hand' to view the cards in your hand or 'others' to see how many cards are in each of your competitors' hands. Press ENTER to send the messages.
+8. To exit, type 'exit' on each client terminal, and type CTRL+C on the server terminal until
+   the program exits.
+
+The Last One Special Cases:
+
+When playing 8's, you must follow the card with another suit to set the current suit to, in the same line.
+When playing Jokers, you must declare the card to play them as afterwards (with extra suit as above for 8s) in the same line.
